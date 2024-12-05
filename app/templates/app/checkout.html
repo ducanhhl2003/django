@@ -1,0 +1,156 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block content_checkout %}
+<br><br><br><br>
+{% comment %} <div class="row" style="width:100%">
+    <div class="col-lg-6">
+        <div class="box-element" id="form-wrapper">
+            <form id="form" method="POST">
+                {%csrf_token%}
+                {{ form.as_p }}
+                <hr>
+                <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="box-element">
+            <a class="btn btn-outline-dark" href="{% url 'cart' %}">&#x2190; Back to Cart</a>
+            <hr>
+            <h3>Order Summary</h3>
+            <hr>
+            {% for item in items %}
+            <div class="cart-row">
+                <div style="flex:2"><img class="row-image" src="{{ item.product.ImageUrl }}"></div>
+                <div style="flex:2"><p>{{ item.product_name }}</p></div> <!-- Hiển thị tên sản phẩm đã lưu -->
+                <div style="flex:1"><p>{{ item.product.price }}</p></div>
+                <div style="flex:1"><p>{{ item.quantity }}</p></div>
+            </div>
+            {% endfor %}
+            <h5>Items: {{ order.get_cart_items }}</h5>
+            <h5>Total: {{ order.get_cart_total }}</h5>
+        </div>
+    </div>
+</div> {% endcomment %}
+<div id="content" class="content-area page-wrapper" role="main">
+	<div class="row row-main">
+		<div class="large-12 col">
+			<div class="col-inner">	
+<form name="checkout" id="form" method="POST" class="checkout woocommerce-checkout " action="" enctype="multipart/form-data" novalidate="novalidate">
+    {%csrf_token%}
+	<div class="row pt-0 ">
+		<div class="large-7 col  ">
+			
+				
+				<div id="customer_details">
+					<div class="clear">
+						<div class="woocommerce-billing-fields">
+	
+		<h3>Thông tin thanh toán</h3>
+
+	
+	
+	<div class="woocommerce-billing-fields__field-wrapper">
+			
+            {{ form.as_p }}
+	</div>
+	</div>
+
+
+					</div>
+
+					<div class="clear">
+						<div class="woocommerce-shipping-fields">
+	</div>
+<div class="woocommerce-additional-fields">
+	
+
+	</div>
+					</div>
+				</div>
+
+				
+			
+		</div>
+
+		<div class="large-5 col">
+			
+					<div class="col-inner has-border">
+						<div class="checkout-sidebar sm-touch-scroll">
+
+							
+							<h3 id="order_review_heading">Đơn hàng của bạn</h3>
+
+							
+							<div id="order_review" class="woocommerce-checkout-review-order">
+								<table class="shop_table woocommerce-checkout-review-order-table">
+	<thead>
+		<tr>
+			<th class="product-name" colspan="4">Sản phẩm</th>
+			<th class="product-total">Giá</th>
+		</tr>
+	</thead>
+	<tbody>
+        {% for item in items %}
+						<tr class="cart_item">
+                            <td class="product-thumbnail">
+								<a href="{%url 'detail'%}?id={{item.product.id}}"><img fetchpriority="high" decoding="async" width="300" height="400" src="{{item.product.ImageUrl}}"></a>
+                            </td>
+					<td class="product-name">
+						{{item.product.name}}&nbsp;						 
+                        <strong class="product-quantity">×&nbsp;{{item.quantity}}</strong>											</td>
+					<td class="product-total">
+						<span class="woocommerce-Price-amount amount"><bdi>{{item.get_total}}&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></bdi></span>					</td>
+				</tr>
+        {%endfor%}
+	</tbody>
+	<tfoot>
+		<tr class="order-total">
+			<th>Tổng</th>
+			<td><strong><span class="woocommerce-Price-amount amount"><bdi>{{order.get_cart_total}}&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></bdi></span></strong> </td>
+		</tr>
+
+		
+	</tfoot>
+</table>
+
+<div id="payment" class="woocommerce-checkout-payment">
+			<ul class="wc_payment_methods payment_methods methods">
+			<li class="wc_payment_method payment_method_cod">
+	<input id="payment_method_cod" type="radio" class="input-radio" name="payment_method" value="cod" checked="checked" data-order_button_text="" style="display: none;">
+	</li>
+		</ul>
+		<div class="form-row place-order">
+		<noscript>
+			Trình duyệt của bạn không hỗ trợ JavaScript, hoặc nó bị vô hiệu hóa, hãy đảm bảo bạn nhấp vào <em>Cập nhật giỏ hàng</em> trước khi bạn thanh toán. Bạn có thể phải trả nhiều hơn số tiền đã nói ở trên, nếu bạn không làm như vậy.			<br/><button type="submit" class="button alt" name="woocommerce_checkout_update_totals" value="Cập nhật tổng">Cập nhật tổng</button>
+		</noscript>
+
+			<div class="woocommerce-terms-and-conditions-wrapper">
+		
+			</div>
+	
+		
+		<button id="form-button" type="submit" class="button alt" name="woocommerce_checkout_place_order" id="place_order" value="Đặt hàng" data-value="Đặt hàng">Đặt hàng</button>
+		<input type="hidden" id="woocommerce-process-checkout-nonce" name="woocommerce-process-checkout-nonce" value="cce1ae73b5"><input type="hidden" name="_wp_http_referer" value="/?wc-ajax=update_order_review">	</div>
+</div>
+
+							</div>
+
+							<div class="woocommerce-privacy-policy-text"><p>Thông tin cá nhân của bạn sẽ được sử dụng để xử lý đơn hàng, tăng trải nghiệm sử dụng website, và cho các mục đích cụ thể khác đã được mô tả trong <a href="https://tkonshop.com/?page_id=3" class="woocommerce-privacy-policy-link" target="_blank">chính sách riêng tư</a> của chúng tôi.</p>
+</div>						</div>
+					</div>
+
+					</div>
+
+	</div>
+</form>
+
+</div>
+
+						
+												</div>
+		</div>
+	</div>
+</div>
+{% endblock content_checkout %}

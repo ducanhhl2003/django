@@ -1,0 +1,637 @@
+{%extends 'app/base.html'%}
+{%load static%}
+{% load custom_filters %}
+{%block detail%}
+        {% comment %} {%for product in products%}
+        <div class="container mt-5 mb-5">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-10">
+                    <div class="card">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="images p-3">
+                                    <div class="text-center p-4"> <img id="main-image" src="{{product.ImageUrl}}" width="250" /> </div>
+                                    <div class="thumbnail text-center"> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="product p-4">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center"> <i class="fa fa-long-arrow-left"></i> <span class="ml-1">Back</span> </div> <i class="fa fa-shopping-cart text-muted"></i>
+                                    </div>
+                                    <div class="mt-4 mb-3"> 
+                                        <h5 class="text-uppercase">{{product.name}}</h5>
+                                        <div class="price d-flex flex-row align-items-center"> <span class="act-price">{{product.price}}đ</span>
+                                        </div>
+                                    </div>
+                                    {{product.description}}
+                                    <div class="cart mt-4 align-items-center"> <button class="btn btn-danger text-uppercase mr-2 px-4">Add to cart</button> <i class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {%endfor%} {% endcomment %}
+<br><br><br><br>
+<div class="shop-container">
+		
+            <div class="container">
+        <div class="woocommerce-notices-wrapper"></div></div>
+        <div id="product-418" class="product type-product post-418 status-publish first onbackorder product_cat-gay-pha has-post-thumbnail shipping-taxable purchasable product-type-simple">
+        
+        <div class="custom-product-page ux-layout-135 ux-layout-scope-global">
+        
+        <div class="row tk-bre" id="row-1832040049">
+        
+        
+        <div id="col-426145712" class="col small-12 large-12">
+                <div class="col-inner">
+            
+            
+        
+        <div class="product-breadcrumb-container is-normal"><nav class="woocommerce-breadcrumb breadcrumbs uppercase"><a href="{%url 'home'%}">Trang chủ</a> <span class="divider">/</span> <a href="https://tkonshop.com/danh-muc-san-pham/gay-pha/">Gậy phá</a></nav></div>
+        
+        
+        </div>
+                    </div>
+        
+        
+        
+        </div>
+        <div class="row tk-pp" id="row-1063178606">
+        
+        
+        <div id="col-1836038949" class="col medium-9 small-12 large-9">
+                <div class="col-inner">
+            
+            
+        {%if product%}
+        <div class="row" id="row-1396915733">
+        
+         
+        {% comment %} <div id="col-766292099" class="col tk-ps medium-5 small-12 large-5">
+                <div class="col-inner">
+            
+            
+        
+        
+        <div class="product-images relative mb-half has-hover woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images" data-columns="4" style="opacity: 1;">
+        
+        <div class="badge-container is-larger absolute left top z-1">
+        </div>
+        
+        <div class="image-tools absolute top show-on-hover right z-3">
+        </div>
+        
+        
+        <figure class="woocommerce-product-gallery__wrapper product-gallery-slider slider slider-nav-small mb-half is-draggable flickity-enabled" data-flickity-options="{
+                      &quot;cellAlign&quot;: &quot;center&quot;,
+                      &quot;wrapAround&quot;: true,
+                      &quot;autoPlay&quot;: false,
+                      &quot;prevNextButtons&quot;: true,
+                      &quot;adaptiveHeight&quot;: true,
+                      &quot;imagesLoaded&quot;: true,
+                      &quot;lazyLoad&quot;: 1,
+                      &quot;dragThreshold&quot; : 15,
+                      &quot;pageDots&quot;: false,
+                      &quot;rightToLeft&quot;: false
+                  }" tabindex="0">
+              
+              <!-- Main Product Image -->
+              <div class="woocommerce-product-gallery__image slide">
+                <img 
+                  width="600" 
+                  height="800" 
+                  src="{{ product.ImageUrl }}" 
+                  class="wp-post-image skip-lazy" 
+                  alt="{{ product.name }}" 
+                  title="{{ product.name }}" 
+                  data-large_image="{{ product.ImageUrl }}" 
+                  data-large_image_width="900" 
+                  data-large_image_height="1200" 
+                  decoding="async" 
+                  fetchpriority="high"
+                  srcset="{{ product.ImageUrl }} 600w, {{ product.ImageUrl }} 225w, {{ product.ImageUrl }} 768w, {{ product.ImageUrl }} 300w, {{ product.ImageUrl }} 900w" 
+                  sizes="(max-width: 600px) 100vw, 600px"
+                />
+              </div>
+              
+              <!-- Secondary Images (Image 2, Image 3, Image 4) -->
+              {% if product.ImageUrl1 %}
+                <div class="woocommerce-product-gallery__image slide">
+                  <img 
+                    width="600" 
+                    height="800" 
+                    src="{{ product.ImageUrl1 }}" 
+                    class="wp-post-image skip-lazy" 
+                    alt="{{ product.name }} Image 1" 
+                    title="{{ product.name }}" 
+                    data-large_image="{{ product.ImageUrl1 }}" 
+                    data-large_image_width="900" 
+                    data-large_image_height="1200" 
+                    decoding="async" 
+                    fetchpriority="high"
+                    srcset="{{ product.ImageUrl1 }} 600w, {{ product.ImageUrl1 }} 225w, {{ product.ImageUrl1 }} 768w, {{ product.ImageUrl1 }} 300w, {{ product.ImageUrl1 }} 900w" 
+                    sizes="(max-width: 600px) 100vw, 600px"
+                  />
+                </div>
+              {% endif %}
+              
+              {% if product.ImageUrl2 %}
+                <div class="woocommerce-product-gallery__image slide">
+                  <img 
+                    width="600" 
+                    height="800" 
+                    src="{{ product.ImageUrl2 }}" 
+                    class="wp-post-image skip-lazy" 
+                    alt="{{ product.name }} Image 2" 
+                    title="{{ product.name }}" 
+                    data-large_image="{{ product.ImageUrl2 }}" 
+                    data-large_image_width="900" 
+                    data-large_image_height="1200" 
+                    decoding="async" 
+                    fetchpriority="high"
+                    srcset="{{ product.ImageUrl2 }} 600w, {{ product.ImageUrl2 }} 225w, {{ product.ImageUrl2 }} 768w, {{ product.ImageUrl2 }} 300w, {{ product.ImageUrl2 }} 900w" 
+                    sizes="(max-width: 600px) 100vw, 600px"
+                  />
+                </div>
+              {% endif %}
+              
+              {% if product.ImageUrl3 %}
+                <div class="woocommerce-product-gallery__image slide">
+                  <img 
+                    width="600" 
+                    height="800" 
+                    src="{{ product.ImageUrl3 }}" 
+                    class="wp-post-image skip-lazy" 
+                    alt="{{ product.name }} Image 3" 
+                    title="{{ product.name }}" 
+                    data-large_image="{{ product.ImageUrl3 }}" 
+                    data-large_image_width="900" 
+                    data-large_image_height="1200" 
+                    decoding="async" 
+                    fetchpriority="high"
+                    srcset="{{ product.ImageUrl3 }} 600w, {{ product.ImageUrl3 }} 225w, {{ product.ImageUrl3 }} 768w, {{ product.ImageUrl3 }} 300w, {{ product.ImageUrl3 }} 900w" 
+                    sizes="(max-width: 600px) 100vw, 600px"
+                  />
+                </div>
+              {% endif %}
+              
+            </figure>
+        <button class="flickity-button flickity-prev-next-button previous" type="button" aria-label="Previous">
+              <svg class="flickity-button-icon" viewBox="0 0 100 100">
+                <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow"></path>
+              </svg>
+            </button>
+            <button class="flickity-button flickity-prev-next-button next" type="button" aria-label="Next">
+              <svg class="flickity-button-icon" viewBox="0 0 100 100">
+                <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180)"></path>
+              </svg>
+            </button>
+          </div>
+      
+          <!-- Product Thumbnails Section (Image 2) -->
+          <div class="product-thumbnails thumbnails slider-no-arrows slider row row-small row-slider slider-nav-small small-columns-4 is-draggable flickity-enabled" data-flickity-options="{
+                  &quot;cellAlign&quot;: &quot;left&quot;,
+                  &quot;wrapAround&quot;: false,
+                  &quot;autoPlay&quot;: false,
+                  &quot;prevNextButtons&quot;: true,
+                  &quot;asNavFor&quot;: &quot;.product-gallery-slider&quot;,
+                  &quot;percentPosition&quot;: true,
+                  &quot;imagesLoaded&quot;: true,
+                  &quot;pageDots&quot;: false,
+                  &quot;rightToLeft&quot;: false,
+                  &quot;contain&quot;: true
+              }" tabindex="0">
+              
+              <!-- Loop through the thumbnails (Image 2) -->
+              {% if product.ImageUrl %}
+                <div class="col is-nav-selected">
+                  <img src="{{ product.ImageUrl }}" alt="{{ product.name }}" width="300" height="400" class="attachment-woocommerce_thumbnail">
+                </div>
+              {% endif %}
+              
+              {% if product.ImageUrl1 %}
+                <div class="col">
+                  <img src="{{ product.ImageUrl1 }}" alt="{{ product.name }} Image 1" width="300" height="400" class="attachment-woocommerce_thumbnail">
+                </div>
+              {% endif %}
+              
+              {% if product.ImageUrl2 %}
+                <div class="col">
+                  <img src="{{ product.ImageUrl2 }}" alt="{{ product.name }} Image 2" width="300" height="400" class="attachment-woocommerce_thumbnail">
+                </div>
+              {% endif %}
+              
+              {% if product.ImageUrl3 %}
+                <div class="col">
+                  <img src="{{ product.ImageUrl3 }}" alt="{{ product.name }} Image 3" width="300" height="400" class="attachment-woocommerce_thumbnail">
+                </div>
+              {% endif %}
+        <div class="image-tools absolute bottom left z-3">
+        <a href="#product-zoom" class="zoom-button button is-outline circle icon tooltip hide-for-small" title="Zoom">
+        <i class="icon-expand"></i>    </a>
+        </div>
+        </div>
+        
+        <div class="product-thumbnails thumbnails slider-no-arrows slider row row-small row-slider slider-nav-small small-columns-4 is-draggable flickity-enabled" data-flickity-options="{
+            &quot;cellAlign&quot;: &quot;left&quot;,
+            &quot;wrapAround&quot;: false,
+            &quot;autoPlay&quot;: false,
+            &quot;prevNextButtons&quot;: true,
+            &quot;asNavFor&quot;: &quot;.product-gallery-slider&quot;,
+            &quot;percentPosition&quot;: true,
+            &quot;imagesLoaded&quot;: true,
+            &quot;pageDots&quot;: false,
+            &quot;rightToLeft&quot;: false,
+            &quot;contain&quot;: true
+        }" tabindex="0">
+                        <div class="flickity-viewport" style="height: 98.9375px; touch-action: pan-y;"><div class="flickity-slider" style="left: 0px; transform: translateX(0%);"><div class="col is-nav-selected first is-selected" style="position: absolute; left: 0%;">
+                
+            </div><div class="col" aria-hidden="true" style="position: absolute; left: 50%;"></div><div class="col" aria-hidden="true" style="position: absolute; left: 75%;"></div></div></div><button class="flickity-button flickity-prev-next-button previous" type="button" disabled="" aria-label="Previous"><svg class="flickity-button-icon" viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow"></path></svg></button><button class="flickity-button flickity-prev-next-button next" type="button" aria-label="Next"><svg class="flickity-button-icon" viewBox="0 0 100 100"><path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180) "></path></svg></button></div>
+        
+        
+        
+        </div>
+                   
+    </div>  {% endcomment %}
+        
+    <div id="col-766292099" class="col tk-ps medium-5 small-12 large-5">
+        <div class="col-inner">
+    
+            <!-- Product Images Section -->
+            <div class="product-images relative mb-half has-hover woocommerce-product-gallery woocommerce-product-gallery--with-images woocommerce-product-gallery--columns-4 images" data-columns="4" style="opacity: 1;">
+            
+                <!-- Badge Container (if needed) -->
+                <div class="badge-container is-larger absolute left top z-1">
+                    <!-- Add badges like Sale or New here if required -->
+                </div>
+                
+                <!-- Main Product Image Gallery -->
+                <figure class="woocommerce-product-gallery__wrapper product-gallery-slider slider slider-nav-small mb-half is-draggable flickity-enabled" data-flickity-options='{
+                    "cellAlign": "center",
+                    "wrapAround": true,
+                    "autoPlay": false,
+                    "prevNextButtons": true,
+                    "adaptiveHeight": true,
+                    "imagesLoaded": true,
+                    "lazyLoad": 1,
+                    "dragThreshold": 15,
+                    "pageDots": false,
+                    "rightToLeft": false
+                }' tabindex="0">
+                
+                    <!-- Main Product Image -->
+                    <div class="woocommerce-product-gallery__image slide">
+                        <img 
+                            width="600" 
+                            height="800" 
+                            src="{{ product.ImageUrl }}" 
+                            class="wp-post-image skip-lazy" 
+                            alt="{{ product.name }}" 
+                            title="{{ product.name }}" 
+                            data-large_image="{{ product.ImageUrl }}" 
+                            data-large_image_width="900" 
+                            data-large_image_height="1200" 
+                            decoding="async" 
+                            fetchpriority="high"
+                            srcset="{{ product.ImageUrl }} 600w, {{ product.ImageUrl }} 225w, {{ product.ImageUrl }} 768w, {{ product.ImageUrl }} 300w, {{ product.ImageUrl }} 900w" 
+                            sizes="(max-width: 600px) 100vw, 600px"
+                        />
+                    </div>
+                    
+                    <!-- Secondary Images (Image 2, Image 3, Image 4) -->
+                    {% if product.ImageUrl1 %}
+                        <div class="woocommerce-product-gallery__image slide">
+                            <img 
+                                width="600" 
+                                height="800" 
+                                src="{{ product.ImageUrl1 }}" 
+                                class="wp-post-image skip-lazy" 
+                                alt="{{ product.name }} Image 1" 
+                                title="{{ product.name }}" 
+                                data-large_image="{{ product.ImageUrl1 }}" 
+                                data-large_image_width="900" 
+                                data-large_image_height="1200" 
+                                decoding="async" 
+                                fetchpriority="high"
+                                srcset="{{ product.ImageUrl1 }} 600w, {{ product.ImageUrl1 }} 225w, {{ product.ImageUrl1 }} 768w, {{ product.ImageUrl1 }} 300w, {{ product.ImageUrl1 }} 900w" 
+                                sizes="(max-width: 600px) 100vw, 600px"
+                            />
+                        </div>
+                    {% endif %}
+                    
+                    {% if product.ImageUrl2 %}
+                        <div class="woocommerce-product-gallery__image slide">
+                            <img 
+                                width="600" 
+                                height="800" 
+                                src="{{ product.ImageUrl2 }}" 
+                                class="wp-post-image skip-lazy" 
+                                alt="{{ product.name }} Image 2" 
+                                title="{{ product.name }}" 
+                                data-large_image="{{ product.ImageUrl2 }}" 
+                                data-large_image_width="900" 
+                                data-large_image_height="1200" 
+                                decoding="async" 
+                                fetchpriority="high"
+                                srcset="{{ product.ImageUrl2 }} 600w, {{ product.ImageUrl2 }} 225w, {{ product.ImageUrl2 }} 768w, {{ product.ImageUrl2 }} 300w, {{ product.ImageUrl2 }} 900w" 
+                                sizes="(max-width: 600px) 100vw, 600px"
+                            />
+                        </div>
+                    {% endif %}
+                    
+                    {% if product.ImageUrl3 %}
+                        <div class="woocommerce-product-gallery__image slide">
+                            <img 
+                                width="600" 
+                                height="800" 
+                                src="{{ product.ImageUrl3 }}" 
+                                class="wp-post-image skip-lazy" 
+                                alt="{{ product.name }} Image 3" 
+                                title="{{ product.name }}" 
+                                data-large_image="{{ product.ImageUrl3 }}" 
+                                data-large_image_width="900" 
+                                data-large_image_height="1200" 
+                                decoding="async" 
+                                fetchpriority="high"
+                                srcset="{{ product.ImageUrl3 }} 600w, {{ product.ImageUrl3 }} 225w, {{ product.ImageUrl3 }} 768w, {{ product.ImageUrl3 }} 300w, {{ product.ImageUrl3 }} 900w" 
+                                sizes="(max-width: 600px) 100vw, 600px"
+                            />
+                        </div>
+                    {% endif %}
+                    
+                </figure>
+                
+                <!-- Navigation Arrows for the Gallery -->
+                <button class="flickity-button flickity-prev-next-button previous" type="button" aria-label="Previous">
+                    <svg class="flickity-button-icon" viewBox="0 0 100 100">
+                        <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow"></path>
+                    </svg>
+                </button>
+                <button class="flickity-button flickity-prev-next-button next" type="button" aria-label="Next">
+                    <svg class="flickity-button-icon" viewBox="0 0 100 100">
+                        <path d="M 10,50 L 60,100 L 70,90 L 30,50  L 70,10 L 60,0 Z" class="arrow" transform="translate(100, 100) rotate(180)"></path>
+                    </svg>
+                </button>
+            </div>
+    
+            <!-- Product Thumbnails Section (Image Thumbnails) -->
+            <div class="product-thumbnails thumbnails slider-no-arrows slider row row-small row-slider slider-nav-small small-columns-4 is-draggable flickity-enabled" data-flickity-options='{
+                "cellAlign": "left",
+                "wrapAround": false,
+                "autoPlay": false,
+                "prevNextButtons": true,
+                "asNavFor": ".product-gallery-slider",
+                "percentPosition": true,
+                "imagesLoaded": true,
+                "pageDots": false,
+                "rightToLeft": false,
+                "contain": true
+            }' tabindex="0">
+                
+                <!-- Thumbnails for Main Image and Secondary Images -->
+                {% if product.ImageUrl %}
+                    <div class="col is-nav-selected">
+                        <img src="{{ product.ImageUrl }}" alt="{{ product.name }}" width="300" height="400" class="attachment-woocommerce_thumbnail">
+                    </div>
+                {% endif %}
+                
+                {% if product.ImageUrl1 %}
+                    <div class="col">
+                        <img src="{{ product.ImageUrl1 }}" alt="{{ product.name }} Image 1" width="300" height="400" class="attachment-woocommerce_thumbnail">
+                    </div>
+                {% endif %}
+                
+                {% if product.ImageUrl2 %}
+                    <div class="col">
+                        <img src="{{ product.ImageUrl2 }}" alt="{{ product.name }} Image 2" width="300" height="400" class="attachment-woocommerce_thumbnail">
+                    </div>
+                {% endif %}
+                
+                {% if product.ImageUrl3 %}
+                    <div class="col">
+                        <img src="{{ product.ImageUrl3 }}" alt="{{ product.name }} Image 3" width="300" height="400" class="attachment-woocommerce_thumbnail">
+                    </div>
+                {% endif %}
+            </div>
+    
+        </div>
+    </div>    
+        <div id="col-146225230" class="col tk-ps medium-7 small-12 large-7">
+                <div class="col-inner">
+            
+            
+        
+        <div class="product-title-container"><h1 class="product-title product_title entry-title">
+            {{product.name}}</h1>
+        
+        </div>
+        
+        <div class="product-price-container is-normal"><div class="price-wrapper">
+            
+                <p class="price product-page-price ">
+                <span class="woocommerce-Price-amount amount" style="font-size: 18px; color: #c12424;"><bdi>Đã bán : <span class="woocommerce-Price-currencySymbol" style="font-family: math;">{{total_quantity}}</span></bdi></span></p>
+        
+                
+        <p class="price product-page-price ">
+        <span class="woocommerce-Price-amount amount"><bdi>{{product.price|add_commas}}&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></bdi></span></p>
+        </div>
+        </div>
+        <div class="add-to-cart-container form-minimal is-normal" style="visibility: {% if product.quantity_in_stock <= 0 %} show {% else %} hidden {% endif %}"><p class="stock out-of-stock">Hết hàng</p> 
+        </div>
+        
+        
+        <div style="visibility: {% if product.quantity_in_stock <= 0 %} hidden {% else %} show {% endif %}">
+        
+        <div class="add-to-cart-container form-minimal is-normal"><p class="stock available-on-backorder">{{product.description|safe}}</p>
+        
+        
+        
+        {% comment %} <div class="quantity buttons_added form-minimal">
+        <input type="button" value="-" class="minus button is-form">				<label class="screen-reader-text" for="quantity_672777a0a749d">Peri PBH-BT2 số lượng</label>
+        <input type="number" id="quantity_672777a0a749d" class="input-text qty text" step="1" min="1" max="" name="quantity" value="{{product.qua}}" title="SL" size="4" placeholder="" inputmode="numeric">
+                <input type="button" value="+" class="plus button is-form">	
+        </div> 
+        {% endcomment %}
+        <button data-product={{product.id}}  data-action="add"  name="add-to-cart" value="418" class="single_add_to_cart_button button alt add-btn update-cart">Thêm vào giỏ hàng</button>       
+        <div class="product-price-container is-normal">
+            <div class="price-wrapper" style="display:flex">
+            <div style="
+            justify-content: center;
+            align-items: center;
+            background-color: gray;
+            display: flex;
+            width: 40%;height:40px;margin-bottom: 15px;" class="moi"><i class="fa-solid fa-truck-fast" style="color:orange"></i><p style="padding-left: 20px;margin: 0px;">Giao hàng toàn quốc</p></div>
+            <div style="justify-content: center;
+            align-items: center;
+            background-color: gray;
+            display: flex;
+            width: 40%;margin-left: 30px;height:40px;margin-bottom: 15px;"><i class="fa-solid fa-gift" style="color:orange"></i><p style="padding-left: 20px;margin: 0px;">Chiết khấu hấp dẫn</p></div>   
+            </div>
+            <div class="price-wrapper" style="display:flex">
+            <div style="justify-content: center;
+            align-items: center;
+            background-color: gray;
+            display: flex;
+            width: 40%;height:40px"><i class="fa-solid fa-medal" style="color:orange"></i><p style="padding-left: 20px;margin: 0px;">Cam kết chính hãng</p></div>
+            <div style="justify-content: center;
+            align-items: center;
+            background-color: gray;
+            display: flex;
+            width: 40%; margin-left: 30px;height:40px"><i class="fa-solid fa-money-bill" style="color:orange"></i><p style="padding-left: 20px;margin: 0px;">Lắp đặt nhanh chóng</p></div>
+            </div>
+        </div>  
+    </div>
+        
+        
+        </div>
+        {%endif%}
+        
+        </div>
+                    </div>
+        
+        
+        
+        <div id="col-647057365" class="col small-12 large-12">
+                <div class="col-inner">
+            
+            
+        
+        
+        
+        
+        </div>
+                    </div>
+        
+        
+        
+        </div>
+        
+        </div>
+
+
+
+
+        <div class="col-19 " style="border : 1px solid #dddddd;
+        margin-left: 20px;
+        width: 900px;
+        margin-bottom: 50px;
+        margin-top: 100px
+        ">
+        <p style="    text-align: center;
+        left: -1px;
+        top: -36px;
+        display: block;
+        position: relative;
+        background: white;
+        border: 1px solid #dddddd;
+        width: 68px;
+        height: 36px;
+        border-bottom: none;
+        border-top-color: #446084;
+        border-top: 2px;border-top: 2px solid #446084;"><strong>Mô tả</strong></p>
+        
+        <div style="margin-top: 30px;margin-left: 20px;margin-bottom: 30px;margin-top: 100px;">
+            {%if product %}
+            {{product.content|safe}}
+            {%endif%}
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+                    </div>
+        
+        
+        
+                    <div id="col-457428924" class="col tk-re medium-3 small-12 large-3">
+                        <div class="col-inner">
+                            <div class="related related-products-wrapper product-section">
+                                <h3 class="product-section-title container-width product-section-title-related pt-half pb-half uppercase">
+                                    Sản phẩm tương tự
+                                </h3>
+                                
+                                <!-- Start related products row -->
+                                <div class="row large-columns-2 medium-columns-2 small-columns-2 row-small">
+                                    {% for item in products_in_same_category %}
+                                        <div class="product-small col has-hover product type-product post-372 status-publish instock product_cat-gay-pha has-post-thumbnail shipping-taxable purchasable product-type-simple">
+                                            <div class="col-inner">
+                                                <!-- Product box -->
+                                                <div class="product-small box">
+                                                    <div class="sale" style="    background-color: #f44236;
+        width: 50px;
+        border-radius: 5px;
+        display: flex;
+        position: absolute;
+        z-index: 99;
+        justify-content: center;
+        right: 6px;
+        color: white;
+        top: 5px;
+        visibility: {% if item.sale > 0 %} visible {% else %} hidden {% endif %}
+        ">
+        - {{item.sale}}% 
+          </div>
+                                                    <!-- Product image -->
+                                                    <div class="box-image">
+                                                        <div class="image-fade_in_back">
+                                                            <a href="{%url 'detail'%}?id={{item.id}}" aria-label="{{ item.name }}">
+                                                                <img width="300" height="400" src="{{ item.ImageUrl }}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="{{ item.name }}" decoding="async" loading="lazy" srcset="{{ item.ImageUrl }} 300w, {{ item.ImageUrl }} 225w, {{ item.ImageUrl }} 768w, {{ item.ImageUrl }} 600w, {{ item.ImageUrl }} 900w" sizes="(max-width: 300px) 100vw, 300px">
+                                                                <img width="300" height="400" src="{{ item.ImageUrl1 }}" class="show-on-hover absolute fill hide-for-small back-image" alt="{{ item.name }}" decoding="async" loading="lazy">
+                                                            </a>
+                                                        </div>
+                                                        <div class="image-tools is-small top right show-on-hover"></div>
+                                                        <div class="image-tools is-small hide-for-small bottom left show-on-hover"></div>
+                                                        <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover"></div>
+                                                        <div class="out-of-stock-label" style="visibility: {% if item.quantity_in_stock <= 0 %} show {% else %} hidden {% endif %}">
+                                                            Hết hàng
+                                                          </div>
+                                                    </div>
+                    
+                                                    <!-- Product title and price -->
+                                                    <div class="box-text box-text-products">
+                                                        <div class="title-wrapper">
+                                                            <p class="name product-title woocommerce-loop-product__title">
+                                                                <a href="{%url 'detail'%}?id={{item.id}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">{{ item.name }}</a>
+                                                            </p>
+                                                        </div>
+                                                        <div class="price-wrapper">
+                                                            <span class="price">
+                                                                <span class="woocommerce-Price-amount amount">
+                                                                    <bdi>{{ item.price|add_commas }} <span class="woocommerce-Price-currencySymbol">₫</span></bdi>
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div> <!-- End product box -->
+                                            </div>
+                                        </div> <!-- End product-small col -->
+                                    {% endfor %}
+                                </div> <!-- End related products row -->
+                            </div> <!-- End related products wrapper -->
+                        </div> <!-- End col-inner -->
+                    </div> 
+                    
+            
+        
+        
+       
+        
+        </div>
+        
+        
+        </div>
+        
+{%endblock detail%}

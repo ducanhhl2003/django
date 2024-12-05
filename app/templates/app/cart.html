@@ -1,0 +1,196 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block cart %}
+{% comment %} <div class="row" style="width:100%">
+	<div class="col-lg-12">
+		<div class="box-element">
+
+			<a  class="btn btn-outline-dark" href="{% url 'home' %}">&#x2190; Continue Shopping</a>
+
+			<br>
+			<br>
+			<table class="table">
+				<tr>
+					<th><h5>Items: <strong>{{order.get_cart_items}}</strong></h5></th>
+					<th><h5>Total:<strong> {{order.get_cart_total}} đ</strong></h5></th>
+					<th>
+						<a  style="float:right; margin:5px;" class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+					</th>
+				</tr>
+			</table>
+
+		</div>
+
+		<br>
+		<div class="box-element">
+			<div class="cart-row">
+				<div style="flex:2"></div>
+				<div style="flex:2"><strong>Item</strong></div>
+				<div style="flex:1"><strong>Price</strong></div>
+				<div style="flex:1"><strong>Quantity</strong></div>
+				<div style="flex:1"><strong>Total</strong></div>
+			</div>
+			{% for item in items %}
+			<div class="cart-row">
+				<div style="flex:2"><img class="row-image" src="{{item.product.ImageUrl}}"></div>
+				<div style="flex:2"><p>{{item.product.name}}</p></div>
+				<div style="flex:1"><p>{{item.product.price}} đ</p></div>
+				<div style="flex:1">
+					<p class="quantity">{{item.quantity}}</p>
+					<div class="quantity">
+						<img class="chg-quantity update-cart" data-product={{item.product.id}} data-action = "add" src="{% static  'app/images/arrow-up.png' %}">
+				
+						<img class="chg-quantity update-cart" data-product={{item.product.id}} data-action = "remove" src="{% static  'app/images/arrow-down.png' %}">
+					</div>
+				</div>
+				<div style="flex:1"><p>{{item.get_total}} đ</p></div>
+			</div>
+			{% endfor %}
+
+		</div>
+	</div>
+</div> {% endcomment %}
+<br><br><br><br>
+<main id="main" class="">
+	<div id="content" class="content-area page-wrapper" role="main">
+		<div class="row row-main">
+			<div class="large-12 col">
+				<div class="col-inner">
+					
+					
+															
+							<div class="woocommerce"><div class="woocommerce-notices-wrapper"><div class="woocommerce-message message-wrapper" role="alert">
+			
+		</div></div><div class="woocommerce row row-large row-divided">
+	<div class="col large-7 pb-0 ">
+	
+	
+	<div class="cart-wrapper sm-touch-scroll">
+	
+		
+		<table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
+			<thead>
+				<tr>
+					<th class="product-name" colspan="3">Sản phẩm</th>
+					<th class="product-price">Giá</th>
+					<th class="product-quantity">Số lượng</th>
+					<th class="product-subtotal">Tổng tiền</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in items %}
+				
+									<tr class="woocommerce-cart-form__cart-item cart_item">
+	
+							{% comment %} <td class="product-remove">
+								<a href="https://tkonshop.com/gio-hang/?remove_item=d1f255a373a3cef72e03aa9d980c7eca&amp;_wpnonce=d6ec369ba0" class="remove" aria-label="Xóa sản phẩm này" data-product_id="418" data-product_sku="">×</a>						</td> {% endcomment %}
+	
+							<td></td>
+							<td class="product-thumbnail">
+								<a href="{%url 'detail'%}?id={{item.product.id}}"><img fetchpriority="high" decoding="async" width="300" height="400" src="{{item.product.ImageUrl}}"></a></td>
+	
+							<td class="product-name" data-title="Sản phẩm">
+							<a href="{%url 'detail'%}?id={{item.product.id}}">{{item.product.name}}</a>							<div class="show-for-small mobile-product-price">
+									<span class="mobile-product-price__qty">1 x </span>
+									<span class="woocommerce-Price-amount amount"><bdi>4.200.000&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></bdi></span>							</div>
+							</td>
+	
+							<td class="product-price" data-title="Giá">
+								<span class="woocommerce-Price-amount amount"><bdi>{{item.product.price}}&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></bdi></span>						
+							</td>
+							<td class="product-quantity" data-title="Số lượng">
+								<div class="quantity buttons_added">
+			                   <input type="button" value="-" class="minus button is-form update-cart" data-product={{item.product.id}} data-action = "remove">				
+							   <label class="screen-reader-text" for="quantity_6728150165188">Peri PBH-BT2 số lượng</label>
+			                   <input type="number" id="quantity_6728150165188" class="input-text qty text" step="1" min="0" max="" name="cart[d1f255a373a3cef72e03aa9d980c7eca][qty]" value="{{item.quantity}}" title="SL" size="4" placeholder="" inputmode="numeric">
+					           <input type="button" value="+" class="plus button is-form update-cart" data-product={{item.product.id}} data-action = "add">	
+							    </div>
+							</td>
+	
+							<td class="product-subtotal" data-title="Tổng tiền">
+								<span class="woocommerce-Price-amount amount"><bdi>{{item.get_total}}&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></bdi></span>						</td>
+						</tr>
+						{% endfor %}
+				
+				<tr>
+					<td colspan="6" class="actions clear">
+	
+						
+	<div class="continue-shopping pull-left text-left">
+		<a class="button-continue-shopping button primary is-outline" href="{%url 'category'%}">
+			←&nbsp;Tiếp tục xem sản phẩm	</a>
+	</div>
+						<input type="hidden" id="woocommerce-cart-nonce" name="woocommerce-cart-nonce" value="d6ec369ba0"><input type="hidden" name="_wp_http_referer" value="/gio-hang/">				</td>
+				</tr>
+	
+						</tbody>
+						
+		</table>
+		</div>
+	</div>
+	
+	
+	<div class="cart-collaterals large-5 col pb-0">
+		
+		<div class="cart-sidebar col-inner ">
+			<div class="cart_totals">
+	
+				  <table cellspacing="0">
+			  <thead>
+				  <tr>
+					  <th class="product-name" colspan="2">Cộng giỏ hàng</th>
+				  </tr>
+			  </thead>
+			  </table>
+	  
+		<h2>Cộng giỏ hàng</h2>
+	
+		<table cellspacing="0" class="shop_table shop_table_responsive">
+	
+			<tbody><tr class="cart-subtotal">
+				<th>Số sản phẩm</th>
+				<td data-title="Tạm tính"><span class="woocommerce-Price-amount amount"><bdi>{{order.get_cart_items}}&nbsp;<span class="woocommerce-Price-currencySymbol"></span></bdi></span></td>
+			</tr>
+	
+			
+			
+			
+			
+			
+			<tr class="order-total">
+				<th>Tổng</th>
+				<td data-title="Tổng"><strong><span class="woocommerce-Price-amount amount"><bdi>{{order.get_cart_total}}&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></bdi></span></strong> </td>
+			</tr>
+	
+			
+		</tbody></table>
+	
+		<div class="wc-proceed-to-checkout">
+			
+	<a href="{%url 'checkout'%}" class="checkout-button button alt wc-forward">
+		Tiến hành thanh toán</a>
+		</div>
+	
+		
+	</div>
+					<!-- <form class="checkout_coupon mb-0" method="post">
+				<div class="coupon">
+					<h3 class="widget-title"><i class="fa-solid fa-tag"></i> Phiếu ưu đãi</h3><input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Mã ưu đãi"> <input type="submit" class="is-form expand" name="apply_coupon" value="Áp dụng">
+								</div>
+			</form> -->
+					<div class="cart-sidebar-content relative"></div>	</div>
+	
+		</div>
+	</div>
+	
+	<div class="cart-footer-content after-cart-content relative"></div></div>
+	
+							
+													</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	</main>
+{% endblock cart %}

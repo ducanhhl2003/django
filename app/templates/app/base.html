@@ -1,0 +1,796 @@
+{% comment %} {% load static %}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!-<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>web bán hàng</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--css-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static "app/css/all.min.css" %} ">
+        <link rel="stylesheet" href="{% static "app/css/owl.carousel.min.css" %} ">
+        <link rel="stylesheet" href="{% static "app/css/style.css" %} ">
+        <link rel="stylesheet" href="{% static "app/css/main.css" %} ">
+        <!--js-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+        <script src="{%static "app/js/all.min.js"%}"></script>
+        <script src="{%static "app/js/myscript.js"%}"></script>
+        <script src="{%static "app/js/owl.carousel.min.js"%}"></script>
+        <script type="text/javascript">
+          var user = '{{request.user}}'
+          function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+          }
+        const csrftoken = getCookie('csrftoken');
+        </script>
+    </head>
+    <body>
+        <!--Header-->
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">
+                <img src="{% static "app/images/9ball.jpg" %}" with = "50" height="50"/>
+              </a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{%url 'home'%}">Trang chủ</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Giới thiệu</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Sản phẩm
+                    </a>
+                    <ul class="dropdown-menu">
+                      {% for i in categories%}
+                      <li><a class="dropdown-item" href="{% url 'category'%}?category={{i.slug}}">{{i.name}}</a></li>
+                      {%endfor%}
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">Liên hệ</a>
+                  </li>
+                </ul>
+                
+                <form class="d-flex" role="search" method="POST" action="{%url 'search'%}">
+                  {%csrf_token%}
+                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searched">
+                  <button class="btn btn-outline-success" type="submit">Tìm kiếm</button>
+                </form>
+              </div>
+              
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="visibility:{{user_login}}">
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    hello {{request.user}}
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="">Trang cá nhân</a></li>
+                    <li><a class="dropdown-item" href="{%url 'cart'%}">Đơn hàng</a></li>
+                    <li><a class="dropdown-item" href="{%url 'logout'%}">Logout</a></li>
+                  </ul>
+                </li>
+              </ul>
+              <div class="form-inline my-2 my-lg-0" style="visibility:{{user_not_login}}">
+                  <a class="nav-link" href="{%url 'login'%}">Đăng nhập</a>
+                  <a class="nav-link" href="{%url 'register'%}">Đăng ký</a>
+              </div>
+  
+              <div class="form-inline my-2 my-lg-0">
+                <a href="{%url 'cart'%}"><img id="cart-icon" src="{%static 'app/images/cart.png'%}"/></a>
+                <p id='cart-total' style="float : right;top: -10px;position:relative">{{cartItems}}</p>
+              </div>
+            </div>
+          </nav>
+          {% block banner_slider%}
+          {% endblock banner_slider%}
+          {% block main-content %}
+          {% endblock main-content %}
+          {%block cart_content%}
+          {%endblock cart_content%}
+          {%block content_checkout %}
+          {% endblock content_checkout %}
+          {%block register%}
+          {%endblock register%}
+          {%block login%}
+          {%endblock login%}
+          {%block search%}
+          {%endblock search%}
+          {%block category%}
+          {%endblock category%}
+          {%block detail%}
+          {%endblock detail%}
+          {%block profile%}
+          {%endblock profile%}
+          {%block checkoutsuccess%}
+          {%endblock checkoutsuccess%}
+          <footer class="container--fluid bg-success text-center fixed-bottom">
+            copyright 2024
+          </footer>
+          <script src="{%static "app/js/cart.js"%}"></script>
+        </body>
+</html> {% endcomment %}
+{% load static %}
+<!DOCTYPE html>
+<!--[if IE 9 ]> <html lang="vi" prefix="og: https://ogp.me/ns#" class="ie9 loading-site no-js"> <![endif]-->
+<!--[if IE 8 ]> <html lang="vi" prefix="og: https://ogp.me/ns#" class="ie8 loading-site no-js"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="vi" prefix="og: https://ogp.me/ns#" class="loading-site no-js"> <!--<![endif]-->
+<head>
+	<meta charset="UTF-8" />
+	<link rel="profile" href="http://gmpg.org/xfn/11" />
+	<link rel="pingback" href="https://tkonshop.com/xmlrpc.php" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="{% static "app/css/moi.css" %} ">
+
+  <!--css-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static "app/css/all.min.css" %} ">
+  <link rel="stylesheet" href="{% static "app/css/owl.carousel.min.css" %} ">
+  <link rel="stylesheet" href="{% static "app/css/style.css" %} ">
+  <link rel="stylesheet" href="{% static "app/css/main.css" %} ">
+  <!--js-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+  <script src="{%static "app/js/all.min.js"%}"></script>
+  <script src="{%static "app/js/myscript.js"%}"></script>
+  <script src="{%static "app/js/owl.carousel.min.js"%}"></script>
+  <script type="text/javascript">
+    var user = '{{request.user}}'
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+    }
+  const csrftoken = getCookie('csrftoken');
+  </script>
+	<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<!-- Search Engine Optimization by Rank Math - https://s.rankmath.com/home -->
+<title>Gậy Bi A chính hãng - AnhCuong Billiards Shop</title>
+<meta name="description" content="AnhCuong Billiards Shop chuyên bán gậy Bi-a chính hãng giá tốt, cung cấp trang thiết bị Billiards. Đào tạo học viên Bida chuyên nghiệp"/>
+<meta name="robots" content="index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large"/>
+<link rel="canonical" href="https://tkonshop.com/" />
+<meta property="og:locale" content="vi_VN" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Gậy Bi A chính hãng - AnhCuong Billiards Shop" />
+<meta property="og:description" content="AnhCuong Billiards Shop chuyên bán gậy Bi-a chính hãng giá tốt, cung cấp trang thiết bị Billiards. Đào tạo học viên Bida chuyên nghiệp" />
+{% comment %} <meta property="og:url" content="https://tkonshop.com/" /> {% endcomment %}
+<meta property="og:site_name" content="AnhCuong Billiards Shop" />
+<meta property="og:updated_time" content="2024-10-21T22:44:36+07:00" />
+<meta property="og:image" content="https://tkonshop.com/wp-content/uploads/2022/09/dao-tao-hoc-vien.jpg" />
+<meta property="og:image:secure_url" content="https://tkonshop.com/wp-content/uploads/2022/09/dao-tao-hoc-vien.jpg" />
+<meta property="og:image:width" content="1920" />
+<meta property="og:image:height" content="1080" />
+<meta property="og:image:alt" content="Gậy bi-a" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="article:published_time" content="2022-07-29T02:07:39+07:00" />
+<meta property="article:modified_time" content="2024-10-21T22:44:36+07:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Gậy Bi A chính hãng - AnhCuong Billiards Shop" />
+<meta name="twitter:description" content="AnhCuong Billiards Shop chuyên bán gậy Bi-a chính hãng giá tốt, cung cấp trang thiết bị Billiards. Đào tạo học viên Bida chuyên nghiệp" />
+<meta name="twitter:image" content="https://tkonshop.com/wp-content/uploads/2022/09/dao-tao-hoc-vien.jpg" />
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="trungnt" />
+<meta name="twitter:label2" content="Time to read" />
+<meta name="twitter:data2" content="2 minutes" />
+<script type="application/ld+json" class="rank-math-schema">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://tkonshop.com/#organization","name":"Tkon Billiards Shop"},{"@type":"WebSite","@id":"https://tkonshop.com/#website","url":"https://tkonshop.com","name":"Tkon Billiards Shop","publisher":{"@id":"https://tkonshop.com/#organization"},"inLanguage":"vi","potentialAction":{"@type":"SearchAction","target":"https://tkonshop.com/?s={search_term_string}","query-input":"required name=search_term_string"}},{"@type":"ImageObject","@id":"https://tkonshop.com/wp-content/uploads/2022/09/dao-tao-hoc-vien.jpg","url":"https://tkonshop.com/wp-content/uploads/2022/09/dao-tao-hoc-vien.jpg","width":"1920","height":"1080","inLanguage":"vi"},{"@type":"WebPage","@id":"https://tkonshop.com/#webpage","url":"https://tkonshop.com/","name":"G\u1eady Bi A ch\u00ednh h\u00e3ng - Tkon Billiards Shop","datePublished":"2022-07-29T02:07:39+07:00","dateModified":"2024-10-21T22:44:36+07:00","about":{"@id":"https://tkonshop.com/#organization"},"isPartOf":{"@id":"https://tkonshop.com/#website"},"primaryImageOfPage":{"@id":"https://tkonshop.com/wp-content/uploads/2022/09/dao-tao-hoc-vien.jpg"},"inLanguage":"vi"},{"@type":"Person","@id":"https://tkonshop.com/author/trungnt/","name":"trungnt","url":"https://tkonshop.com/author/trungnt/","image":{"@type":"ImageObject","@id":"https://secure.gravatar.com/avatar/5247aeb32d43ff30cd55805c6c875373?s=96&amp;d=mm&amp;r=g","url":"https://secure.gravatar.com/avatar/5247aeb32d43ff30cd55805c6c875373?s=96&amp;d=mm&amp;r=g","caption":"trungnt","inLanguage":"vi"},"sameAs":["https://tkonshop.com"],"worksFor":{"@id":"https://tkonshop.com/#organization"}},{"@type":"Article","headline":"G\u1eady Bi A ch\u00ednh h\u00e3ng - Tkon Billiards Shop","keywords":"G\u1eady bi-a","datePublished":"2022-07-29T02:07:39+07:00","dateModified":"2024-10-21T22:44:36+07:00","author":{"@id":"https://tkonshop.com/author/trungnt/"},"publisher":{"@id":"https://tkonshop.com/#organization"},"description":"Tkon Billiards Shop chuy\u00ean b\u00e1n g\u1eady Bi-a ch\u00ednh h\u00e3ng gi\u00e1 t\u1ed1t, cung c\u1ea5p trang thi\u1ebft b\u1ecb Billiards. \u0110\u00e0o t\u1ea1o h\u1ecdc vi\u00ean Bida chuy\u00ean nghi\u1ec7p","name":"G\u1eady Bi A ch\u00ednh h\u00e3ng - Tkon Billiards Shop","@id":"https://tkonshop.com/#richSnippet","isPartOf":{"@id":"https://tkonshop.com/#webpage"},"image":{"@id":"https://tkonshop.com/wp-content/uploads/2022/09/dao-tao-hoc-vien.jpg"},"inLanguage":"vi","mainEntityOfPage":{"@id":"https://tkonshop.com/#webpage"}}]}</script>
+<!-- /Rank Math WordPress SEO plugin -->
+
+<link rel='dns-prefetch' href='//cdn.jsdelivr.net' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel="alternate" type="application/rss+xml" title="Dòng thông tin AnhCuong Billiards Shop &raquo;" href="https://tkonshop.com/feed/" />
+<link rel="alternate" type="application/rss+xml" title="Tkon Billiards Shop &raquo; Dòng bình luận" href="https://tkonshop.com/comments/feed/" />
+<link rel="prefetch" href="https://tkonshop.com/wp-content/themes/flatsome/assets/js/chunk.countup.fe2c1016.js" />
+<link rel="prefetch" href="https://tkonshop.com/wp-content/themes/flatsome/assets/js/chunk.sticky-sidebar.a58a6557.js" />
+<link rel="prefetch" href="https://tkonshop.com/wp-content/themes/flatsome/assets/js/chunk.tooltips.29144c1c.js" />
+<link rel="prefetch" href="https://tkonshop.com/wp-content/themes/flatsome/assets/js/chunk.vendors-popups.947eca5c.js" />
+<link rel="prefetch" href="https://tkonshop.com/wp-content/themes/flatsome/assets/js/chunk.vendors-slider.c7f2bd49.js" />
+<script type="text/javascript">
+/* <![CDATA[ */
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/15.0.3\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/tkonshop.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.6.2"}};
+/*! This file is auto-generated */
+!function(i,n){var o,s,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),r=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===r[t]})}function u(e,t,n){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\uddfa\ud83c\uddf3","\ud83c\uddfa\u200b\ud83c\uddf3")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!n(e,"\ud83d\udc26\u200d\u2b1b","\ud83d\udc26\u200b\u2b1b")}return!1}function f(e,t,n){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):i.createElement("canvas"),a=r.getContext("2d",{willReadFrequently:!0}),o=(a.textBaseline="top",a.font="600 32px Arial",{});return e.forEach(function(e){o[e]=t(a,e,n)}),o}function t(e){var t=i.createElement("script");t.src=e,t.defer=!0,i.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",s=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){i.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),p.toString()].join(",")+"));",r=new Blob([e],{type:"text/javascript"}),a=new Worker(URL.createObjectURL(r),{name:"wpTestEmojiSupports"});return void(a.onmessage=function(e){c(n=e.data),a.terminate(),t(n)})}catch(e){}c(n=f(s,u,p))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+/* ]]> */
+</script>
+<style id='wp-emoji-styles-inline-css' type='text/css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<style id='wp-block-library-inline-css' type='text/css'>
+:root{--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,161;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px;--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223;--wp-bound-block-color:var(--wp-block-synced-color)}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}.has-text-align-center{text-align:center}.has-text-align-left{text-align:left}.has-text-align-right{text-align:right}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{border:0;clip:rect(1px,1px,1px,1px);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;word-wrap:normal!important}.screen-reader-text:focus{background-color:#ddd;clip:auto!important;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style*=border-top-color]){border-top-style:solid}html :where([style*=border-right-color]){border-right-style:solid}html :where([style*=border-bottom-color]){border-bottom-style:solid}html :where([style*=border-left-color]){border-left-style:solid}html :where([style*=border-width]){border-style:solid}html :where([style*=border-top-width]){border-top-style:solid}html :where([style*=border-right-width]){border-right-style:solid}html :where([style*=border-bottom-width]){border-bottom-style:solid}html :where([style*=border-left-width]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}
+</style>
+<style id='classic-theme-styles-inline-css' type='text/css'>
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+</style>
+<link rel='stylesheet' id='contact-form-7-css' href='https://tkonshop.com/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.6.2' type='text/css' media='all' />
+<style id='woocommerce-inline-inline-css' type='text/css'>
+.woocommerce form .form-row .required { visibility: visible; }
+</style>
+<link rel='stylesheet' id='mb-wp-contact-style-css' href='https://tkonshop.com/wp-content/plugins/wp-helper-lite/assets/css/frontend/mb-wp-contact-style.css?ver=6.6.2' type='text/css' media='all' />
+<link rel='stylesheet' id='flatsome-main-css' href='https://tkonshop.com/wp-content/themes/flatsome/assets/css/flatsome.css?ver=3.15.7' type='text/css' media='all' />
+<style id='flatsome-main-inline-css' type='text/css'>
+@font-face {
+				font-family: "fl-icons";
+				font-display: block;
+				src: url(https://tkonshop.com/wp-content/themes/flatsome/assets/css/icons/fl-icons.eot?v=3.15.7);
+				src:
+					url(https://tkonshop.com/wp-content/themes/flatsome/assets/css/icons/fl-icons.eot#iefix?v=3.15.7) format("embedded-opentype"),
+					url(https://tkonshop.com/wp-content/themes/flatsome/assets/css/icons/fl-icons.woff2?v=3.15.7) format("woff2"),
+					url(https://tkonshop.com/wp-content/themes/flatsome/assets/css/icons/fl-icons.ttf?v=3.15.7) format("truetype"),
+					url(https://tkonshop.com/wp-content/themes/flatsome/assets/css/icons/fl-icons.woff?v=3.15.7) format("woff"),
+					url(https://tkonshop.com/wp-content/themes/flatsome/assets/css/icons/fl-icons.svg?v=3.15.7#fl-icons) format("svg");
+			}
+</style>
+<link rel='stylesheet' id='flatsome-shop-css' href='https://tkonshop.com/wp-content/themes/flatsome/assets/css/flatsome-shop.css?ver=3.15.7' type='text/css' media='all' />
+<link rel='stylesheet' id='flatsome-style-css' href='https://tkonshop.com/wp-content/themes/flatsome-child/style.css?ver=3.0' type='text/css' media='all' />
+<link rel='stylesheet' id='flatsome-googlefonts-css' href='//fonts.googleapis.com/css?family=Oswald%3Aregular%2Cregular%2Cregular%2C700%7CDancing+Script%3Aregular%2C400&#038;display=swap&#038;ver=3.9' type='text/css' media='all' />
+<script type="text/javascript" src="https://tkonshop.com/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
+<script type="text/javascript" src="https://tkonshop.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="https://tkonshop.com/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://tkonshop.com/wp-json/wp/v2/pages/12" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://tkonshop.com/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 6.6.2" />
+<link rel='shortlink' href='https://tkonshop.com/' />
+<link rel="alternate" title="oNhúng (JSON)" type="application/json+oembed" href="https://tkonshop.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Ftkonshop.com%2F" />
+<link rel="alternate" title="oNhúng (XML)" type="text/xml+oembed" href="https://tkonshop.com/wp-json/oembed/1.0/embed?url=https%3A%2F%2Ftkonshop.com%2F&#038;format=xml" />
+<style>.bg{opacity: 0; transition: opacity 1s; -webkit-transition: opacity 1s;} .bg-loaded{opacity: 1;}</style><!--[if IE]><link rel="stylesheet" type="text/css" href="https://tkonshop.com/wp-content/themes/flatsome/assets/css/ie-fallback.css"><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"></script><script>var head = document.getElementsByTagName('head')[0],style = document.createElement('style');style.type = 'text/css';style.styleSheet.cssText = ':before,:after{content:none !important';head.appendChild(style);setTimeout(function(){head.removeChild(style);}, 0);</script><script src="https://tkonshop.com/wp-content/themes/flatsome/assets/libs/ie-flexibility.js"></script><![endif]-->	<noscript><style>.woocommerce-product-gallery{ opacity: 1 !important; }</style></noscript>
+	<link rel="icon" href="https://tkonshop.com/wp-content/uploads/2022/08/cropped-fav-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://tkonshop.com/wp-content/uploads/2022/08/cropped-fav-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://tkonshop.com/wp-content/uploads/2022/08/cropped-fav-180x180.png" />
+<meta name="msapplication-TileImage" content="https://tkonshop.com/wp-content/uploads/2022/08/cropped-fav-270x270.png" />
+<style id="custom-css" type="text/css">:root {--primary-color: #000000;}.container-width, .full-width .ubermenu-nav, .container, .row{max-width: 1370px}.row.row-collapse{max-width: 1340px}.row.row-small{max-width: 1362.5px}.row.row-large{max-width: 1400px}.header-main{height: 120px}#logo img{max-height: 120px}#logo{width:200px;}.header-top{min-height: 30px}.transparent .header-main{height: 120px}.transparent #logo img{max-height: 120px}.has-transparent + .page-title:first-of-type,.has-transparent + #main > .page-title,.has-transparent + #main > div > .page-title,.has-transparent + #main .page-header-wrapper:first-of-type .page-title{padding-top: 120px;}.header.show-on-scroll,.stuck .header-main{height:70px!important}.stuck #logo img{max-height: 70px!important}.header-bottom {background-color: #f1f1f1}.header-main .nav > li > a{line-height: 16px }.stuck .header-main .nav > li > a{line-height: 50px }@media (max-width: 549px) {.header-main{height: 70px}#logo img{max-height: 70px}}.main-menu-overlay{background-color: #e6a900}/* Color */.accordion-title.active, .has-icon-bg .icon .icon-inner,.logo a, .primary.is-underline, .primary.is-link, .badge-outline .badge-inner, .nav-outline > li.active> a,.nav-outline >li.active > a, .cart-icon strong,[data-color='primary'], .is-outline.primary{color: #000000;}/* Color !important */[data-text-color="primary"]{color: #000000!important;}/* Background Color */[data-text-bg="primary"]{background-color: #000000;}/* Background */.scroll-to-bullets a,.featured-title, .label-new.menu-item > a:after, .nav-pagination > li > .current,.nav-pagination > li > span:hover,.nav-pagination > li > a:hover,.has-hover:hover .badge-outline .badge-inner,button[type="submit"], .button.wc-forward:not(.checkout):not(.checkout-button), .button.submit-button, .button.primary:not(.is-outline),.featured-table .title,.is-outline:hover, .has-icon:hover .icon-label,.nav-dropdown-bold .nav-column li > a:hover, .nav-dropdown.nav-dropdown-bold > li > a:hover, .nav-dropdown-bold.dark .nav-column li > a:hover, .nav-dropdown.nav-dropdown-bold.dark > li > a:hover, .header-vertical-menu__opener ,.is-outline:hover, .tagcloud a:hover,.grid-tools a, input[type='submit']:not(.is-form), .box-badge:hover .box-text, input.button.alt,.nav-box > li > a:hover,.nav-box > li.active > a,.nav-pills > li.active > a ,.current-dropdown .cart-icon strong, .cart-icon:hover strong, .nav-line-bottom > li > a:before, .nav-line-grow > li > a:before, .nav-line > li > a:before,.banner, .header-top, .slider-nav-circle .flickity-prev-next-button:hover svg, .slider-nav-circle .flickity-prev-next-button:hover .arrow, .primary.is-outline:hover, .button.primary:not(.is-outline), input[type='submit'].primary, input[type='submit'].primary, input[type='reset'].button, input[type='button'].primary, .badge-inner{background-color: #000000;}/* Border */.nav-vertical.nav-tabs > li.active > a,.scroll-to-bullets a.active,.nav-pagination > li > .current,.nav-pagination > li > span:hover,.nav-pagination > li > a:hover,.has-hover:hover .badge-outline .badge-inner,.accordion-title.active,.featured-table,.is-outline:hover, .tagcloud a:hover,blockquote, .has-border, .cart-icon strong:after,.cart-icon strong,.blockUI:before, .processing:before,.loading-spin, .slider-nav-circle .flickity-prev-next-button:hover svg, .slider-nav-circle .flickity-prev-next-button:hover .arrow, .primary.is-outline:hover{border-color: #000000}.nav-tabs > li.active > a{border-top-color: #000000}.widget_shopping_cart_content .blockUI.blockOverlay:before { border-left-color: #000000 }.woocommerce-checkout-review-order .blockUI.blockOverlay:before { border-left-color: #000000 }/* Fill */.slider .flickity-prev-next-button:hover svg,.slider .flickity-prev-next-button:hover .arrow{fill: #000000;}/* Background Color */[data-icon-label]:after, .secondary.is-underline:hover,.secondary.is-outline:hover,.icon-label,.button.secondary:not(.is-outline),.button.alt:not(.is-outline), .badge-inner.on-sale, .button.checkout, .single_add_to_cart_button, .current .breadcrumb-step{ background-color:#ff0202; }[data-text-bg="secondary"]{background-color: #ff0202;}/* Color */.secondary.is-underline,.secondary.is-link, .secondary.is-outline,.stars a.active, .star-rating:before, .woocommerce-page .star-rating:before,.star-rating span:before, .color-secondary{color: #ff0202}/* Color !important */[data-text-color="secondary"]{color: #ff0202!important;}/* Border */.secondary.is-outline:hover{border-color:#ff0202}body{font-family:"Oswald", sans-serif}body{font-weight: 0}body{color: #333333}.nav > li > a {font-family:"Oswald", sans-serif;}.mobile-sidebar-levels-2 .nav > li > ul > li > a {font-family:"Oswald", sans-serif;}.nav > li > a {font-weight: 700;}.mobile-sidebar-levels-2 .nav > li > ul > li > a {font-weight: 700;}h1,h2,h3,h4,h5,h6,.heading-font, .off-canvas-center .nav-sidebar.nav-vertical > li > a{font-family: "Oswald", sans-serif;}h1,h2,h3,h4,h5,h6,.heading-font,.banner h1,.banner h2{font-weight: 0;}h1,h2,h3,h4,h5,h6,.heading-font{color: #333333;}.alt-font{font-family: "Dancing Script", sans-serif;}.alt-font{font-weight: 400!important;}.header:not(.transparent) .header-nav-main.nav > li > a {color: #333333;}a{color: #333333;}@media screen and (min-width: 550px){.products .box-vertical .box-image{min-width: 300px!important;width: 300px!important;}}.footer-1{background-color: #222222}.absolute-footer, html{background-color: #222222}.label-new.menu-item > a:after{content:"New";}.label-hot.menu-item > a:after{content:"Hot";}.label-sale.menu-item > a:after{content:"Sale";}.label-popular.menu-item > a:after{content:"Popular";}</style></head>
+
+<body class="home page-template page-template-page-transparent-header-light page-template-page-transparent-header-light-php page page-id-12 theme-flatsome woocommerce-no-js lightbox nav-dropdown-has-arrow nav-dropdown-has-shadow nav-dropdown-has-border">
+
+
+<a class="skip-link screen-reader-text" href="#main">Skip to content</a>
+
+<div id="wrapper">
+
+	
+	<header id="header" class="header transparent has-transparent has-sticky sticky-jump">
+		<div class="header-wrapper">
+			<div id="masthead" class="header-main hide-for-sticky nav-dark toggle-nav-dark">
+      <div class="header-inner flex-row container logo-left medium-logo-center" role="navigation">
+
+          <!-- Logo -->
+          <div id="logo" class="flex-col logo">
+            
+<!-- Header logo -->
+<a href="{%url 'home'%}" title="Tkon Billiards Shop" rel="home">
+
+		<img width="1020" height="610" src="{% static "app/images/9ball.jpg" %}" 
+    class="header_logo header-logo" alt="ANHCUONG Billiards Shop"/>
+    <img  width="1020" height="610" src="{% static "app/images/9ball.jpg" %}"
+     class="header-logo-dark" alt="ANHCUONG Billiards Shop"/></a>
+          </div>
+
+          <!-- Mobile Left Elements -->
+          <div class="flex-col show-for-medium flex-left">
+            <ul class="mobile-nav nav nav-left ">
+              <li class="nav-icon has-icon">
+  		<a href="#" data-open="#main-menu" data-pos="center" data-bg="main-menu-overlay" data-color="" class="is-small" aria-label="Menu" aria-controls="main-menu" aria-expanded="false">
+		
+		  <i class="icon-menu" ></i>
+		  		</a>
+	</li>            </ul>
+          </div>
+
+          <!-- Left Elements -->
+          <div class="flex-col hide-for-medium flex-left
+            flex-grow">
+            <ul class="header-nav header-nav-main nav nav-left  nav-uppercase" >
+              <li id="menu-item-224" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-12 current_page_item menu-item-224 active menu-item-design-default"><a href="{%url 'home'%}" aria-current="page" class="nav-top-link" style="color: aqua;">Trang chủ</a></li>
+<li id="menu-item-271" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-271 menu-item-design-default"><a href="{%url 'gioi_thieu'%}" class="nav-top-link" style="color: aqua;">Giới thiệu</a></li>
+<li id="menu-item-61" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-61 menu-item-design-default has-dropdown"><a href="{%url 'category'%}"class="nav-top-link" style="color: aqua;">Sản phẩm<i class="fa-solid fa-angle-down" style="margin-left: 5px; font-size: 15px;"></i></a>
+<ul class="sub-menu nav-dropdown nav-dropdown-default">
+  {% for i in categories%}
+  <li id="menu-item-719" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-719"><a class="dropdown-item" href="{% url 'category'%}?category={{i.slug}}">{{i.name}}</a></li>
+	{%endfor%}
+</ul>
+</li>
+<li id="menu-item-207" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-207 menu-item-design-default"><a href="{%url 'contact'%}" class="nav-top-link" style="color: aqua;">Liên hệ</a></li>
+</ul>
+          </div>
+
+          <!-- Right Elements -->
+          <div class="flex-col hide-for-medium flex-right">
+            
+            
+            <ul class="header-nav header-nav-main nav nav-right  nav-uppercase">
+              <li class="header-search header-search-dropdown has-icon has-dropdown menu-item-has-children">
+		<a href="#" aria-label="Tìm kiếm" class="is-small" style="color: aqua;"><i class="fa-solid fa-magnifying-glass"></i></a>
+		<ul class="nav-dropdown nav-dropdown-default">
+	 	<li class="header-search-form search-form html relative has-icon">
+	<div class="header-search-form-wrapper">
+		<div class="searchform-wrapper ux-search-box relative is-normal">
+<form class="searchform" role="search" method="POST" action="{%url 'search'%}">
+  {%csrf_token%}
+	<div class="flex-row relative">
+						<div class="flex-col flex-grow">
+			<label class="screen-reader-text" for="woocommerce-product-search-field-0">Tìm kiếm:</label>
+			<input type="search" id="woocommerce-product-search-field-0" ria-label="Search" class="search-field mb-0" placeholder="Tìm kiếm&hellip;" value="" name="searched" />
+			<input type="hidden" name="post_type" value="product" />
+					</div>
+		<div class="flex-col">
+      
+			<button type="submit" value="Tìm kiếm" class="ux-search-submit submit-button secondary button icon mb-0" aria-label="Submit">
+				<i class="fa-solid fa-magnifying-glass"></i>			
+      </button>
+		</div>
+	</div>
+	<div class="live-search-results text-left z-top"></div>
+</form>
+</div>	</div>
+</li>	
+</li></ul>
+</li>
+<li class="header-divider"></li><li class="cart-item has-icon" >
+	<a href="https://tkonshop.com/gio-hang/" class="header-cart-link off-canvas-toggle nav-top-link is-small" data-open="#cart-popup" data-class="off-canvas-cart" title="Giỏ hàng" data-pos="right">
+    <i class="fa-solid fa-cart-shopping"
+    data-icon-label="0" style="color: aqua;">
+  </i>
+  <p id='cart-total' style="display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  text-align: center;
+  font-weight: 800;
+  font-size: 12px;
+  text-align: center;
+  background-color: red;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  float: right;
+  top: -10px;
+  position: relative;">{{cartItems}}</p>
+  <!-- Cart Sidebar Popup -->
+  {% if cartitem == 0 %}
+  <div id="cart-popup" class="mfp-hide widget_shopping_cart">
+      <div class="cart-popup-inner inner-padding">
+          <div class="cart-popup-title text-center">
+              <h4 class="uppercase">Giỏ hàng</h4>
+              <div class="is-divider"></div>
+          </div>
+          <div class="widget_shopping_cart_content"> 
+              <p class="woocommerce-mini-cart__empty-message">Chưa có sản phẩm trong giỏ hàng.</p>
+          </div>
+          <div class="cart-sidebar-content relative"></div>
+      </div>
+  </div>
+{% else %}
+  <div id="cart-popup" class=" mfp-hide widget_shopping_cart">
+      <div class="cart-popup-inner inner-padding">
+          <div class="cart-popup-title text-center">
+              <h4 class="uppercase">Giỏ hàng</h4>
+              <div class="is-divider"></div>
+          </div>
+          <div class="widget_shopping_cart_content">
+            {% for item in items %}
+              <ul class="woocommerce-mini-cart cart_list product_list_widget">
+                  <li class="woocommerce-mini-cart-item mini_cart_item">
+                      <a href="https://tkonshop.com/gio-hang/?remove_item=a01610228fe998f515a72dd730294d87&amp;_wpnonce=67cd077dcf" class="remove remove_from_cart_button" aria-label="Xóa sản phẩm này" data-product_id="1212" data-cart_item_key="a01610228fe998f515a72dd730294d87" data-product_sku="">×</a>
+                      <a href="{%url 'detail'%}?id={{item.product.id}}">
+                          <img width="300" height="400" src="{{item.product.ImageUrl}}" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="" decoding="async" loading="lazy">{{item.product.name}}
+                      </a>
+                      <span class="quantity">{{item.quantity}} × <span class="woocommerce-Price-amount amount"><bdi>{{item.product.price}} &nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></bdi></span></span>
+                  </li>
+              </ul>
+              <p class="woocommerce-mini-cart__total total">
+                  <strong>Tổng số phụ:</strong> <span class="woocommerce-Price-amount amount"><bdi>{{item.get_total}}&nbsp;<span class="woocommerce-Price-currencySymbol">₫</span></bdi></span>
+              </p>
+              <p class="woocommerce-mini-cart__buttons buttons">
+                  <a href="{% url 'cart' %}" class="button wc-forward">Xem giỏ hàng</a>
+                  <a href="{% url 'checkout' %}" class="button checkout wc-forward">Thanh toán</a>
+              </p>
+              {%endfor%}
+          </div>
+          <div class="cart-sidebar-content relative"></div>
+      </div>
+  </div>
+{% endif %}
+
+
+</li>
+<li id="menu-item-61" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-61 menu-item-design-default has-dropdown"><a href=""class="nav-top-link" style="color: aqua;"><i class="fa-solid fa-user"></i><i class="fa-solid fa-angle-down" style="margin-left: 5px; font-size: 15px;"></i></a>
+  <ul class="sub-menu nav-dropdown nav-dropdown-default" style="visibility:{{user_not_login}}">
+    <li id="menu-item-719" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-719"><a class="dropdown-item" href="{%url 'login'%}">Đăng nhập</a></li>
+    <li id="menu-item-719" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-719"><a class="dropdown-item" href="{%url 'register'%}">Đăng ký</a></li>
+  </ul>
+  <ul class="sub-menu nav-dropdown nav-dropdown-default" style="visibility:{{user_login}}">
+    <li id="menu-item-719" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-719">Xin chào {{request.user}}</li>
+    <li id="menu-item-719" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-719"><a class="dropdown-item" href="{%url 'profile'%}">Trang cá nhân</a></li>
+    <li id="menu-item-719" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-719"><a class="dropdown-item" href="{%url 'logout'%}">Đăng xuất</a></li>
+  </ul>
+  </li>
+  <li id="menu-item-61" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-61 menu-item-design-default has-dropdown" style="visibility:{{admin_login}}"><a href=""class="nav-top-link" style="color: aqua;"><i class="fa-solid fa-chart-column"></i><i class="fa-solid fa-angle-down" style="margin-left: 5px; font-size: 15px;"></i></a>
+    <ul class="sub-menu nav-dropdown nav-dropdown-default" >
+      <li id="menu-item-719" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-719"><a class="dropdown-item" href="{%url 'revenue_report'%}">Thống kê theo sản phẩm</a></li>
+      <li id="menu-item-719" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-719"><a class="dropdown-item" href="{%url 'kho'%}">Thống kê kho hàng</a></li>
+      <li id="menu-item-719" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-719"><a class="dropdown-item" href="{%url 'quantity'%}">Thống kê sản phẩm bán chạy</a></li>
+      <li id="menu-item-719" class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-719"><a class="dropdown-item" href="{%url 'revenue_report_month'%}">Thống kê theo tháng</a></li>
+    </ul>
+    </li>
+            </ul>
+            
+          </div>
+
+          <!-- Mobile Right Elements -->
+          <div class="flex-col show-for-medium flex-right">
+            <ul class="mobile-nav nav nav-right ">
+              <li class="cart-item has-icon">
+
+      <a href="https://tkonshop.com/gio-hang/" class="header-cart-link off-canvas-toggle nav-top-link is-small" data-open="#cart-popup" data-class="off-canvas-cart" title="Giỏ hàng" data-pos="right">
+  
+    <i class="icon-shopping-bag"
+    data-icon-label="0">
+  </i>
+  </a>
+
+</li>
+            </ul>
+          </div>
+
+      </div>
+     
+            <div class="container"><div class="top-divider full-width"></div></div>
+      </div>
+<div class="header-bg-container fill"><div class="header-bg-image fill"></div><div class="header-bg-color fill"></div></div>		</div>
+	</header>
+
+	
+<main id="main" class="">
+  {%block main-content%}
+  {% endblock main-content %}
+  {%block detail%}
+  {%endblock detail%}
+  {%block category%}
+  {%endblock category%}
+  {%block search%}
+  {%endblock search%}
+  {%block cart%}
+  {%endblock cart%}
+  {% block content_checkout %}
+  {% endblock content_checkout %}
+  {%block gioithieu%}
+  {%endblock gioithieu%}
+  {%block contact%}
+  {%endblock contact%}
+  {%block login%}
+  {%endblock login%}
+  {%block register%}
+  {%endblock register%}
+  {%block profile%}
+  {%endblock profile%}
+  {%block checkoutsuccess%}
+  {%endblock checkoutsuccess%}
+</main>
+
+<footer id="footer" class="footer-wrapper">
+
+	
+<!-- FOOTER 1 -->
+<div class="footer-widgets footer footer-1">
+		<div class="row dark large-columns-3 mb-0">
+	   		
+		<div id="block_widget-2" class="col pb-0 widget block_widget">
+		
+		<h5 class="uppercase">ANHCUONG BILLIARDS</h5>
+<p>Địa chỉ: 234 Hoàng Quốc Việt, Cổ Nhuế, Bắc Từ Liêm, Hà Nội</p>
+<p><a href="tel:0377190670">Hotline: 0377190670</a></p>
+<p>Mở cửa: 08:00am - 11:00pm</p>
+<div>
+<a href="https://www.facebook.com"><i class="fa-brands fa-facebook-f"></i></a>
+<a href="#"><i class="fa-brands fa-instagram"></i></a>
+</div>
+		</div>
+		
+		<div id="block_widget-3" class="col pb-0 widget block_widget">
+		
+		<h5 class="uppercase">Thông tin</h5>
+<p><a href="#">Chính sách mua hàng & bảo hành</a></p>
+<p><a href="#">Chính sách đổi trả</a></p>
+<p><a href="#">Hướng dẫn sử dụng</a></p>
+<p><a href="#">Điều khoản</a></p>
+		</div>
+		        
+		</div>
+</div>
+
+<!-- FOOTER 2 -->
+
+
+
+<div class="absolute-footer dark medium-text-center text-center">
+  <div class="container clearfix">
+
+    
+    <div class="footer-primary pull-left">
+            <div class="copyright-footer">
+        Copyright 2024 © ANHCUONG      </div>
+          </div>
+  </div>
+</div>
+
+
+<a href="#top" class="back-to-top button icon invert plain fixed bottom z-1 is-outline round hide-for-medium" id="top-link" aria-label="Go to top"><i class="fa-solid fa-angle-up"></i></a>
+
+</footer>
+
+</div>
+
+<div id="main-menu" class="mobile-sidebar no-scrollbar mfp-hide">
+
+	
+	<div class="sidebar-menu no-scrollbar text-center">
+
+		
+					<ul class="nav nav-sidebar nav-vertical nav-uppercase nav-anim" data-tab="1">
+				<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-12 current_page_item menu-item-224"><a href="https://tkonshop.com/" aria-current="page">Trang chủ</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-271"><a href="https://tkonshop.com/gioi-thieu/">Giới thiệu</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-61"><a href="{%url 'category'%}">Sản phẩm</a>
+<ul class="sub-menu nav-sidebar-ul children">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-719"><a href="https://tkonshop.com/danh-muc-san-pham/gay-danh/">Gậy đánh</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-721"><a href="https://tkonshop.com/danh-muc-san-pham/gay-pha/">Gậy phá</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-720"><a href="https://tkonshop.com/danh-muc-san-pham/gay-nhay/">Gậy nhảy</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-718"><a href="https://tkonshop.com/danh-muc-san-pham/bao-gay/">Bao gậy</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-722"><a href="https://tkonshop.com/danh-muc-san-pham/phu-kien/">Phụ kiện</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-product_cat menu-item-736"><a href="https://tkonshop.com/danh-muc-san-pham/ban-billiards/">Bàn Billiards</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-753"><a href="#">Đăng ký học viên</a>
+<ul class="sub-menu nav-sidebar-ul children">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-229"><a href="https://tkonshop.com/dang-ky/">Đăng ký</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-754"><a href="https://tkonshop.com/hoc-online/">Học online</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-743"><a href="https://tkonshop.com/cac-bai-tap-co-ban/">Các bài tập cơ bản</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-744"><a href="https://tkonshop.com/cac-the-bi-hay/">Các thế bi hay</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1339"><a href="https://tkonshop.com/category/tin-tuc/">Tin tức</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-841"><a href="https://tkonshop.com/cho-thue-gay-ban/">Cho thuê gậy &#038; bàn</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-852"><a href="https://tkonshop.com/tu-van-setup-clb/">Tư vấn setup CLB</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-853"><a href="https://tkonshop.com/to-chuc-giai-dau/">Tổ chức giải đấu</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-207"><a href="https://tkonshop.com/lien-he/">Liên hệ</a></li>
+			</ul>
+		
+		
+	</div>
+
+	
+</div>
+            <div id="mbwph-contact" class="mbwph-main-contact onLeft" style="top: 90%">
+            <div class="mbwph-contact-container onLeft">
+                <div class="mbwph-contact-header" style="background-color:#e6a900">
+                    <div class="mbwph-header-title">Xin chào! Chúng tôi có thể giúp gì cho bạn?</div>
+                    <div class="mbwph-contact-header-close">
+                        <span>
+                           <svg width="12" height="13" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                              <g transform="translate(-4087 108)">
+                                 <g>
+                                    <path transform="translate(4087 -108)" fill="currentColor" d="M 14 1.41L 12.59 0L 7 5.59L 1.41 0L 0 1.41L 5.59 7L 0 12.59L 1.41 14L 7 8.41L 12.59 14L 14 12.59L 8.41 7L 14 1.41Z"></path>
+                                 </g>
+                              </g>
+                           </svg>
+                        </span>
+                    </div>
+                </div>
+
+                <ul>
+                                                                                    <li>
+                            <a class="mbwph-contact-item mbwph-contact-zalo" href="http://zalo.me/0377190670 " target="blank">
+                                <div class="mbwph-contact-icon"><img src="https://tkonshop.com/wp-content/plugins/wp-helper-lite/assets/images/mbwph-icon-zalo.png" alt=""></div>
+                                <div class="mbwph-contact-child">
+                                    <span class="mbwph-contact-child-title">0377190670 </span>
+                                </div>
+                            </a>
+                        </li>
+                                                                                    <li>
+                            <a class="mbwph-contact-item mbwph-contact-messenger" href="/">
+                                <div class="mbwph-contact-icon"><img src="https://tkonshop.com/wp-content/plugins/wp-helper-lite/assets/images/mbwph-icon-messenger.png" alt=""></div>
+                                <div class="mbwph-contact-child">
+                                    <span class="mbwph-contact-child-title">Messenger</span>
+                                </div>
+                            </a>
+                        </li>
+                                    </ul>
+            </div>
+            <div class="mbwph-contact-button onLeft" style="background-color:#e6a900">
+                <div class="mbwph-button-border" style="background-color:#e6a900"></div>
+                <div class="mbwph-button-border" style="background-color:#e6a900"></div>
+                <div class="mbwph-button-group-icon">
+                    <div class="mbwph-button-icon">
+                        <svg class="mbwph-button-icon-child" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 29">
+                            <path class="mbwph-button-chat-icon" fill="#FFFFFF" fill-rule="evenodd" d="M878.289968,975.251189 L878.289968,964.83954 C878.289968,963.46238 876.904379,962 875.495172,962 L857.794796,962 C856.385491,962 855,963.46238 855,964.83954 L855,975.251189 C855,976.924031 856.385491,978.386204 857.794796,978.090729 L860.589592,978.090729 L860.589592,981.876783 L860.589592,983.76981 L861.521191,983.76981 C861.560963,983.76981 861.809636,982.719151 862.45279,982.823297 L866.179185,978.090729 L875.495172,978.090729 C876.904379,978.386204 878.289968,976.924031 878.289968,975.251189 Z M881.084764,971.465135 L881.084764,976.197702 C881.43316,978.604561 879.329051,980.755508 876.426771,980.93027 L868.042382,980.93027 L866.179185,982.823297 C866.400357,983.946455 867.522357,984.94992 868.973981,984.716324 L876.426771,984.716324 L879.221567,988.502377 C879.844559,988.400361 880.153166,989.448891 880.153166,989.448891 L881.084764,989.448891 L881.084764,987.555864 L881.084764,984.716324 L882.947962,984.716324 C884.517696,984.949819 885.742758,983.697082 885.742758,981.876783 L885.742758,974.304675 C885.742659,972.717669 884.517597,971.465135 882.947962,971.465135 L881.084764,971.465135 Z" transform="translate(-855 -962)"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="mbwph-close-button-icon">
+                    <svg width="12" height="13" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <g transform="translate(-4087 108)">
+                            <g>
+                                <path transform="translate(4087 -108)" fill="currentColor" d="M 14 1.41L 12.59 0L 7 5.59L 1.41 0L 0 1.41L 5.59 7L 0 12.59L 1.41 14L 7 8.41L 12.59 14L 14 12.59L 8.41 7L 14 1.41Z"></path>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <div class="mbwph-contact-greeting onLeft">
+                <div class="mbwph-contact-greeting-content">Xin chào! Chúng tôi có thể giúp gì cho bạn?</div>
+                <div class="mbwph-contact-close-greeting" style="background-color:#e6a900">
+                 <span>
+                    <svg width="12" height="13" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                       <g transform="translate(-4087 108)">
+                          <g>
+                             <path transform="translate(4087 -108)" fill="currentColor" d="M 14 1.41L 12.59 0L 7 5.59L 1.41 0L 0 1.41L 5.59 7L 0 12.59L 1.41 14L 7 8.41L 12.59 14L 14 12.59L 8.41 7L 14 1.41Z"></path>
+                          </g>
+                       </g>
+                    </svg>
+                 </span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mbwph-fbc onLeft"><div id="fb-root"></div> </div>
+            <script>
+            window.fbAsyncInit = function() {
+            FB.init({
+               xfbml            : true,
+               version          : "v12.0"
+            });
+            };
+            (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js";
+            fjs.parentNode.insertBefore(js, fjs);
+         }(document, "script", "facebook-jssdk"));</script><div class="fb-customerchat"
+            attribution=setup_tool
+            page_id="592377791448242"
+        
+            logged_in_greeting=""
+            logged_out_greeting=""
+            alignment="left">
+         </div>    <div id="login-form-popup" class="lightbox-content mfp-hide">
+            <div class="woocommerce-notices-wrapper"></div>
+<div class="account-container lightbox-inner">
+
+	
+			<div class="account-login-inner">
+
+				<h3 class="uppercase">Đăng nhập</h3>
+
+				<form class="woocommerce-form woocommerce-form-login login" method="post">
+
+					
+					<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+						<label for="username">Tên tài khoản hoặc địa chỉ email&nbsp;<span class="required">*</span></label>
+						<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" autocomplete="username" value="" />					</p>
+					<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+						<label for="password">Mật khẩu&nbsp;<span class="required">*</span></label>
+						<input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="password" autocomplete="current-password" />
+					</p>
+
+					
+					<p class="form-row">
+						<label class="woocommerce-form__label woocommerce-form__label-for-checkbox woocommerce-form-login__rememberme">
+							<input class="woocommerce-form__input woocommerce-form__input-checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever" /> <span>Ghi nhớ mật khẩu</span>
+						</label>
+						<input type="hidden" id="woocommerce-login-nonce" name="woocommerce-login-nonce" value="37dd2f6eed" /><input type="hidden" name="_wp_http_referer" value="/" />						<button type="submit" class="woocommerce-button button woocommerce-form-login__submit" name="login" value="Đăng nhập">Đăng nhập</button>
+					</p>
+					<p class="woocommerce-LostPassword lost_password">
+						<a href="https://tkonshop.com/tai-khoan/lost-password/">Quên mật khẩu?</a>
+					</p>
+
+					
+				</form>
+			</div>
+
+			
+</div>
+
+          </div>
+  	<script type="text/javascript">
+		(function () {
+			var c = document.body.className;
+			c = c.replace(/woocommerce-no-js/, 'woocommerce-js');
+			document.body.className = c;
+		})();
+	</script>
+	<style id='wp-block-paragraph-inline-css' type='text/css'>
+.is-small-text{font-size:.875em}.is-regular-text{font-size:1em}.is-large-text{font-size:2.25em}.is-larger-text{font-size:3em}.has-drop-cap:not(:focus):first-letter{float:left;font-size:8.4em;font-style:normal;font-weight:100;line-height:.68;margin:.05em .1em 0 0;text-transform:uppercase}body.rtl .has-drop-cap:not(:focus):first-letter{float:none;margin-left:.1em}p.has-drop-cap.has-background{overflow:hidden}:root :where(p.has-background){padding:1.25em 2.375em}:where(p.has-text-color:not(.has-link-color)) a{color:inherit}p.has-text-align-left[style*="writing-mode:vertical-lr"],p.has-text-align-right[style*="writing-mode:vertical-rl"]{rotate:180deg}
+</style>
+<style id='global-styles-inline-css' type='text/css'>
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgba(6,147,227,1) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgba(252,185,0,1) 0%,rgba(255,105,0,1) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgba(255,105,0,1) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgba(255, 255, 255, 1), 6px 6px rgba(0, 0, 0, 1);--wp--preset--shadow--crisp: 6px 6px 0px rgba(0, 0, 0, 1);}:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}:where(.wp-block-columns.is-layout-flex){gap: 2em;}:where(.wp-block-columns.is-layout-grid){gap: 2em;}:where(.wp-block-post-template.is-layout-flex){gap: 1.25em;}:where(.wp-block-post-template.is-layout-grid){gap: 1.25em;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+</style>
+<script type="text/javascript" src="https://tkonshop.com/wp-includes/js/dist/vendor/wp-polyfill.min.js?ver=3.15.0" id="wp-polyfill-js"></script>
+<script type="text/javascript" id="contact-form-7-js-extra">
+/* <![CDATA[ */
+var wpcf7 = {"api":{"root":"https:\/\/tkonshop.com\/wp-json\/","namespace":"contact-form-7\/v1"}};
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://tkonshop.com/wp-content/plugins/contact-form-7/includes/js/index.js?ver=5.6.2" id="contact-form-7-js"></script>
+<script type="text/javascript" src="https://tkonshop.com/wp-content/plugins/woocommerce/assets/js/jquery-blockui/jquery.blockUI.min.js?ver=2.7.0-wc.6.8.0" id="jquery-blockui-js"></script>
+<script type="text/javascript" id="wc-add-to-cart-js-extra">
+/* <![CDATA[ */
+var wc_add_to_cart_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%","i18n_view_cart":"Xem gi\u1ecf h\u00e0ng","cart_url":"https:\/\/tkonshop.com\/gio-hang\/","is_cart":"","cart_redirect_after_add":"no"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://tkonshop.com/wp-content/plugins/woocommerce/assets/js/frontend/add-to-cart.min.js?ver=6.8.0" id="wc-add-to-cart-js"></script>
+<script type="text/javascript" src="https://tkonshop.com/wp-content/plugins/woocommerce/assets/js/js-cookie/js.cookie.min.js?ver=2.1.4-wc.6.8.0" id="js-cookie-js"></script>
+<script type="text/javascript" id="woocommerce-js-extra">
+/* <![CDATA[ */
+var woocommerce_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://tkonshop.com/wp-content/plugins/woocommerce/assets/js/frontend/woocommerce.min.js?ver=6.8.0" id="woocommerce-js"></script>
+<script type="text/javascript" id="wc-cart-fragments-js-extra">
+/* <![CDATA[ */
+var wc_cart_fragments_params = {"ajax_url":"\/wp-admin\/admin-ajax.php","wc_ajax_url":"\/?wc-ajax=%%endpoint%%","cart_hash_key":"wc_cart_hash_e78526d9318342a6e1adcfeb0912dc0b","fragment_name":"wc_fragments_e78526d9318342a6e1adcfeb0912dc0b","request_timeout":"5000"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://tkonshop.com/wp-content/plugins/woocommerce/assets/js/frontend/cart-fragments.min.js?ver=6.8.0" id="wc-cart-fragments-js"></script>
+<script type="text/javascript" src="https://tkonshop.com/wp-content/plugins/wp-helper-lite/assets/js/frontend/mb-wp-ct-scripts.js?ver=1.0.0" id="mb-wp-contact-script-js"></script>
+<script type="text/javascript" src="https://tkonshop.com/wp-content/themes/flatsome/inc/extensions/flatsome-live-search/flatsome-live-search.js?ver=3.15.7" id="flatsome-live-search-js"></script>
+<script type="text/javascript" src="https://tkonshop.com/wp-includes/js/hoverIntent.min.js?ver=1.10.2" id="hoverIntent-js"></script>
+<script type="text/javascript" id="flatsome-js-js-extra">
+/* <![CDATA[ */
+var flatsomeVars = {"theme":{"version":"3.15.7"},"ajaxurl":"https:\/\/tkonshop.com\/wp-admin\/admin-ajax.php","rtl":"","sticky_height":"70","assets_url":"https:\/\/tkonshop.com\/wp-content\/themes\/flatsome\/assets\/js\/","lightbox":{"close_markup":"<button title=\"%title%\" type=\"button\" class=\"mfp-close\"><svg xmlns=\"http:\/\/www.w3.org\/2000\/svg\" width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-x\"><line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"><\/line><line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"><\/line><\/svg><\/button>","close_btn_inside":false},"user":{"can_edit_pages":false},"i18n":{"mainMenu":"Main Menu","toggleButton":"Toggle"},"options":{"cookie_notice_version":"1","swatches_layout":false,"swatches_box_select_event":false,"swatches_box_behavior_selected":false,"swatches_box_update_urls":"1","swatches_box_reset":false,"swatches_box_reset_extent":false,"swatches_box_reset_time":300,"search_result_latency":"0"},"is_mini_cart_reveal":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://tkonshop.com/wp-content/themes/flatsome/assets/js/flatsome.js?ver=2ba06bae7e21001b4413f16ac4e08981" id="flatsome-js-js"></script>
+<script type="text/javascript" src="https://tkonshop.com/wp-content/themes/flatsome/assets/js/woocommerce.js?ver=7a63f7aa2c4bbf851812535d8e4e7958" id="flatsome-theme-woocommerce-js-js"></script>
+<!--[if IE]>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/intersection-observer-polyfill@0.1.0/dist/IntersectionObserver.js?ver=0.1.0" id="intersection-observer-polyfill-js"></script>
+<![endif]-->
+<script src="{%static "app/js/cart.js"%}"></script>
+</body>
+</html>
+
+

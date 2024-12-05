@@ -1,0 +1,117 @@
+#text-724326056 {
+    text-align: center;
+}
+
+#text-box-1446597967 {
+    width: 100%;
+}
+
+#text-box-1446597967 .text-box-content {
+    font-size: 100%;
+}
+
+#banner-1438274820 {
+    padding-top: 60vh;
+}
+
+#banner-1438274820 .bg.bg-loaded {
+    background-image: url(https://tkonshop.com/wp-content/uploads/2022/08/IMG_4441.jpg);
+}
+
+#banner-1438274820 .ux-shape-divider--top svg {
+    height: 150px;
+    --divider-top-width: 100%;
+}
+
+#banner-1438274820 .ux-shape-divider--bottom svg {
+    height: 150px;
+    --divider-width: 100%;
+}
+
+@media (min-width:550px) {
+    #banner-1438274820 {
+        padding-top: 100vh;
+    }
+}
+
+#text-1035630616 {
+    text-align: center;
+}
+
+#text-box-971674718 {
+    width: 100%;
+}
+
+#text-box-971674718 .text-box-content {
+    font-size: 100%;
+}
+
+#banner-1868066875 {
+    padding-top: 60vh;
+}
+
+#banner-1868066875 .bg.bg-loaded {
+    background-image: url(https://tkonshop.com/wp-content/uploads/2022/08/IMG_4440.png);
+}
+
+#banner-1868066875 .ux-shape-divider--top svg {
+    height: 150px;
+    --divider-top-width: 100%;
+}
+
+#banner-1868066875 .ux-shape-divider--bottom svg {
+    height: 150px;
+    --divider-width: 100%;
+}
+
+@media (min-width:550px) {
+    #banner-1868066875 {
+        padding-top: 100vh;
+    }
+}
+
+#text-2778205376 {
+    text-align: center;
+}
+
+#text-box-694019431 {
+    width: 100%;
+}
+
+#text-box-694019431 .text-box-content {
+    font-size: 100%;
+}
+
+#banner-644154989 {
+    padding-top: 60vh;
+}
+
+#banner-644154989 .bg.bg-loaded {
+    background-image: url(https://tkonshop.com/wp-content/uploads/2022/08/10a277126459945.612e117123c19.jpg);
+}
+
+#banner-644154989 .ux-shape-divider--top svg {
+    height: 150px;
+    --divider-top-width: 100%;
+}
+
+#banner-644154989 .ux-shape-divider--bottom svg {
+    height: 150px;
+    --divider-width: 100%;
+}
+
+@media (min-width:550px) {
+    #banner-644154989 {
+        padding-top: 100vh;
+    }
+}
+
+.moi {
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    background-color: gray;
+    display: flex;
+    width: 50%;
+}

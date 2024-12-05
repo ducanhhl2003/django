@@ -1,0 +1,202 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block profile %}
+<style>
+  .call_change {
+        display: inline-block;
+        justify-content: center;
+        border: 2px solid red;
+        padding: 10px 20px;
+        color: red;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        background-color:white;
+        overflow: hidden;
+        white-space: nowrap;
+        top:-60px;
+        font-size: 20px; /* Đổi giá trị font-size tại đây */
+        font-weight: bold;
+    }
+    .call_change:hover {
+        background-color: red;
+        color: white;
+    }
+    .image-container {
+      width: 150px;
+      height: 150px;
+      overflow: hidden;
+      border-radius: 50%;
+      margin: 20px auto;
+      position: relative;
+      border: 2px solid #ccc;
+    }
+
+    #preview-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    #upload-btn {
+      display: block;
+      margin: 10px auto;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+      .image-container {
+      width: 150px;
+      height: 150px;
+      overflow: hidden;
+      border-radius: 50%;
+      margin: 20px auto;
+      position: relative;
+      border: 2px solid #ccc;
+    }
+
+    #preview-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    #upload-btn-container {
+      text-align: center;
+    }
+
+    #upload-btn {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  #upload-btn:hover {
+        background-color: gray;
+        color: white;
+    }
+    input[type="file"] {
+      display: none;
+    }
+
+</style>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h1 style="text-align: center;">Thông Tin Cá Nhân</h1>
+<form class="row g-3">
+    <div class="col-md-6">
+        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+        <label for="inputEmail4" class="form-label">Họ tên</label>
+        <input type="username" class="form-control" id="Username" placeholder="{{full_name}}" readonly>
+        </br>
+        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+        <label for="inputEmail4" class="form-label">Tài khoản</label>
+        <input type="username" class="form-control" id="Username" placeholder="{{ user.username }}" readonly>
+        </br>
+        </br>
+        <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+        <label for="inputPassword4" class="form-label">Email</label>
+        <input type="email" class="form-control" id="Email" placeholder="{{ user.email }}" readonly>
+        
+    </div>
+    <div class="col-md-6">
+
+        <div class="image-container">
+<img id="preview-image" src="placeholder-image.jpg">
+        </div>
+        <div id="upload-btn-container">
+            <label for="file-input" id="upload-btn">Chọn ảnh</label>
+            <input type="file" id="file-input" accept="image/*">
+        </div>
+        <script>
+  // Kiểm tra xem có ảnh đã chọn trước đó trong sessionStorage không
+  const storedImage = sessionStorage.getItem('selectedImage');
+  if (storedImage) {
+    document.getElementById('preview-image').src = storedImage;
+  }
+
+  document.getElementById('file-input').addEventListener('change', function(event) {
+    const fileInput = event.target;
+    const previewImage = document.getElementById('preview-image');
+
+    const file = fileInput.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        previewImage.src = e.target.result;
+
+        // Lưu ảnh đã chọn vào sessionStorage
+        sessionStorage.setItem('selectedImage', e.target.result);
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      // Reset ảnh về ảnh mặc định khi không có file nào được chọn
+      previewImage.src = 'placeholder-image.jpg';
+
+      // Xóa ảnh đã lưu trong sessionStorage
+      sessionStorage.removeItem('selectedImage');
+    }
+  });
+
+        </script>
+
+    </div>
+
+    {% comment %} <div class="col-12">
+        <a href="{% url 'change_account' %}" class="call_change">&#x2190; Thay đổi thông tin cá nhân</a>
+    </div> {% endcomment %}
+</form>
+{% endblock profile %}
+{% comment %} {%extends 'app/base.html'%}
+{%load static%}
+{%block profile%}
+<br>
+<br>
+<br>
+<br>
+<br>
+<section class="bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 mb-4 mb-sm-5">
+                <div class="card card-style1 border-0">
+                    <div class="card-body p-1-9 p-sm-2-3 p-md-6 p-lg-7">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 mb-4 mb-lg-0">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="...">
+                            </div>
+                            <div class="col-lg-6 px-xl-10">
+                                <div class="bg-secondary d-lg-inline-block py-1-9 px-1-9 px-sm-6 mb-1-9 rounded">
+                                    <h3 class="h2 text-white mb-0">{{full_name}}</h3>
+                                </div>
+                                <ul class="list-unstyled mb-1-9">
+                                    <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Position:</span> Coach</li>
+                                    <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Experience:</span> 10 Years</li>
+                                    <li class="mb-2 mb-xl-3 display-28"><span class="display-26 text-secondary me-2 font-weight-600">Email:</span> {{user.email}}</li>
+                                    <li class="display-28"><span class="display-26 text-secondary me-2 font-weight-600">Phone:</span> 507 - 541 - 4567</li>
+                                </ul>
+                                <ul class="social-icon-style1 list-unstyled mb-0 ps-0">
+                                    <li><a href="#!"><i class="ti-twitter-alt"></i></a></li>
+                                    <li><a href="#!"><i class="ti-facebook"></i></a></li>
+                                    <li><a href="#!"><i class="ti-pinterest"></i></a></li>
+                                    <li><a href="#!"><i class="ti-instagram"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{%endblock profile%} {% endcomment %}

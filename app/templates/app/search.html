@@ -1,0 +1,120 @@
+{%extends 'app/base.html'%}
+{%load static%}
+{% load custom_filters %}
+{%block search%}
+<div class="shop-page-title category-page-title page-title ">
+	<div class="page-title-inner flex-row  medium-flex-wrap container">
+	  <div class="flex-col flex-grow medium-text-center">
+	  	<div class="is-large">
+	<nav class="woocommerce-breadcrumb breadcrumbs uppercase"><a href="{% url 'home'%}">Trang chủ</a> <span class="divider">&#47;</span> <a href="{% url 'category'%}">Cửa hàng</a>  <span class="divider">&#47;</span>Kết quả tìm kiếm cho : {{searched}}</nav></div>
+<div class="category-filtering category-filter-row ">
+	<a href="#" data-open="#shop-sidebar"  data-pos="left" class="filter-button uppercase plain">
+		<i class="fa-solid fa-arrow-up-short-wide"></i>
+    <strong>Lọc</strong>
+	</a>
+	<div class="inline-block">
+			</div>
+</div>
+	  </div>
+	  <div class="flex-col medium-text-center">
+	  	<p class="woocommerce-result-count hide-for-medium">
+	
+{% comment %} <form class="woocommerce-ordering" method="get">
+	<select name="orderby" class="orderby" aria-label="Đơn hàng của cửa hàng">
+					<option value="menu_order"  selected='selected'>Thứ tự mặc định</option>
+					<option value="popularity" >Thứ tự theo mức độ phổ biến</option>
+					<option value="rating" >Thứ tự theo điểm đánh giá</option>
+					<option value="date" >Mới nhất</option>
+					<option value="price" >Thứ tự theo giá: thấp đến cao</option>
+					<option value="price-desc" >Thứ tự theo giá: cao xuống thấp</option>
+			</select>
+	<input type="hidden" name="paged" value="1" />
+	</form> {% endcomment %}
+  {% comment %} <form class="woocommerce-ordering" method="get" action="{% url 'search' %}">
+    <select name="orderby" class="orderby" aria-label="Đơn hàng của cửa hàng">
+        <option value="menu_order" {% if request.GET.orderby == 'menu_order' %}selected{% endif %}>Thứ tự mặc định</option>
+        <option value="date" {% if request.GET.orderby == 'date' %}selected{% endif %}>Mới nhất</option>
+        <option value="price" {% if request.GET.orderby == 'price' %}selected{% endif %}>Thứ tự theo giá: thấp đến cao</option>
+        <option value="price-desc" {% if request.GET.orderby == 'price-desc' %}selected{% endif %}>Thứ tự theo giá: cao xuống thấp</option>
+    </select>
+    <input type="hidden" name="paged" value="1" />
+</form> {% endcomment %}
+
+	  </div>
+	</div>
+</div>
+
+	<main id="main" class="">
+<div class="row category-page-row">
+
+		<div class="col large-12">
+		<div class="shop-container">
+		
+		<div class="woocommerce-notices-wrapper"></div><div class="products row row-small large-columns-4 medium-columns-3 small-columns-2">
+      {% for product in keys %}
+      <div class="product-small col has-hover product type-product post-1275 status-publish instock product_cat-gay-danh has-post-thumbnail shipping-taxable purchasable product-type-simple">
+        <div class="col-inner">
+          <div class="product-small box">
+            <!-- Ảnh sản phẩm -->
+            <div class="box-image">
+              <div class="image-fade_in_back">
+                <a href="{%url 'detail'%}?id={{product.id}}">
+                  <img 
+                    loading="lazy" 
+                    decoding="async" 
+                    width="300" 
+                    height="400"
+                    src="{{product.ImageUrl}}" 
+                    class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" 
+                    alt="Peri PTE-04 SE" 
+                  />
+                </a>
+              </div>
+              <div class="image-tools is-small top right show-on-hover"></div>
+              <div class="image-tools is-small hide-for-small bottom left show-on-hover"></div>
+              <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover"></div>
+              <div class="out-of-stock-label" style="visibility: {% if product.quantity_in_stock <= 0 %} show {% else %} hidden {% endif %}">
+                Hết hàng
+              </div>
+            </div>
+    
+            <!-- Thông tin sản phẩm -->
+            <div class="box-text box-text-products">
+              <div class="title-wrapper">
+                <p class="name product-title woocommerce-loop-product__title">
+                  <a href="{%url 'detail'%}?id={{product.id}}" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                    {{product.name}}
+                  </a>
+                </p>
+              </div>
+              <div class="price-wrapper">
+                <span class="price">
+                  <span class="woocommerce-Price-amount amount">
+                    <bdi>{{product.price | floatformat:2 |add_commas}}&nbsp;<span class="woocommerce-Price-currencySymbol">&#8363;</span></bdi>
+                  </span>
+                </span>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+</div>
+<!-- row --><div class="container">
+<nav class="woocommerce-pagination">
+</div>
+
+		</div><!-- shop container -->
+		</div>
+
+		<div id="shop-sidebar" class="mfp-hide">
+			<div class="sidebar-inner">
+				<p>You need to assign Widgets to <strong>"Shop Sidebar"</strong> in <a href="https://tkonshop.com/wp-admin/widgets.php">Appearance > Widgets</a> to show anything here</p>			</div>
+		</div>
+</div>
+
+</main>
+{%endblock search%}
+
+
